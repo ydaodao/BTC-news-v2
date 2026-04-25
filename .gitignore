@@ -15,3 +15,7 @@ __pycache__/
 # VS Code
 .vscode/
 .venv/
+
+# 自定义
+images/
+log/

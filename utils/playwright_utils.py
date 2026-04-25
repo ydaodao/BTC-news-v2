@@ -1,29 +1,20 @@
-import logging
 import os
 from time import sleep
 from typing import Any, Dict, List, Optional
 from urllib.parse import urljoin, urlparse
-
 import requests
+from playwright.sync_api import sync_playwright, Playwright, Browser, BrowserContext, Page, Locator
+from utils.file_utils import FileUtils
+from loguru import logger
 from dotenv import find_dotenv, load_dotenv
-from playwright.sync_api import sync_playwright
-
 load_dotenv(find_dotenv())
+
 
 LOCAL_DEV = os.getenv("LOCAL_DEV") == "true"
 PAGELOAD_TIMEOUT_MS = 60000 if not LOCAL_DEV else 10000
 
-logger = logging.getLogger(__name__)
 
-
-def configure_logging(level: int = logging.INFO) -> None:
-    logging.basicConfig(
-        level=level,
-        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
-    )
-
-
-def list_pages(context) -> None:
+def list_pages(context: BrowserContext) -> None:
     pages = list(context.pages)
     logger.info("open pages: %s", len(pages))
     for i, page in enumerate(pages, start=1):
@@ -33,7 +24,7 @@ def list_pages(context) -> None:
             logger.exception("%s. failed to read page info", i)
 
 
-def find_pages_by_title(context, title_keyword: str) -> List[Dict[str, Any]]:
+def find_pages_by_title(context: BrowserContext, title_keyword: str) -> List[Dict[str, Any]]:
     keyword = title_keyword.lower()
     matches: List[Dict[str, Any]] = []
     for page in context.pages:
@@ -59,7 +50,7 @@ def find_pages_by_url(context, url_keyword: str) -> List[Dict[str, Any]]:
     return matches
 
 
-def open_page(context, url: str, *, listener: Any = None):
+def open_page(context: BrowserContext, url: str, *, listener: Any = None):
     page = context.new_page()
     if listener:
         page.on("response", listener.handle_response)
@@ -79,7 +70,7 @@ def open_page(context, url: str, *, listener: Any = None):
 
 
 def activate_page(
-    context,
+    context: BrowserContext,
     title_keyword: Optional[str] = None,
     url_keyword: Optional[str] = None,
     *,
@@ -161,7 +152,7 @@ def activate_page(
     return page
 
 
-def scroll_to_bottom(page) -> Optional[bool]:
+def scroll_to_bottom(page: Page) -> Optional[bool]:
     if not page:
         return None
     page.evaluate("window.scrollTo(0, document.body.scrollHeight);")
@@ -170,7 +161,7 @@ def scroll_to_bottom(page) -> Optional[bool]:
     return True
 
 
-def scroll_by(page, delta_y: int) -> bool:
+def scroll_by(page: Page, delta_y: int) -> bool:
     try:
         current_scroll = page.evaluate("window.pageYOffset || document.documentElement.scrollTop")
         new_scroll_position = current_scroll + delta_y
@@ -194,7 +185,7 @@ def scroll_by(page, delta_y: int) -> bool:
 
 
 def find_element(
-    page,
+    page: Page,
     element_info: tuple[str, str],  # 元组：(名称, CSS选择器)
     *,
     timeout_ms: int = 10000,
@@ -215,8 +206,21 @@ def find_element(
         logger.exception("find element failed: %s", element_info)
         return None
 
+def save_screenshot(element: Locator, path: str):
+    if not element:
+        logger.error("element is None")
+        return
+    try:
+        # 调用 screenshot 方法
+        element.screenshot(path=path)
+        logger.info(f"✅ 截图成功！已保存为: {path}")
+        # (可选) 你可以在可视化的浏览器中看到元素被“闪烁”一下，那是 Playwright 在聚焦它
+        
+    except Exception as e:
+        logger.error(f"❌ 截图失败: {e}")
+        # 常见失败原因：元素不存在、元素是隐藏的(width/height为0)
 
-def to_absolute_url(page, url: Optional[str]) -> Optional[str]:
+def _to_absolute_url(page: Page, url: Optional[str]) -> Optional[str]:
     if not url:
         return url
     if url.startswith(("http://", "https://", "data:", "blob:")):
@@ -234,9 +238,8 @@ def to_absolute_url(page, url: Optional[str]) -> Optional[str]:
     logger.info("absolute url (join): %s -> %s", url, absolute_url)
     return absolute_url
 
-
 def perform_action(
-    page,
+    page: Page,
     element_info: tuple[str, str],  # 元组：(名称, CSS选择器)
     *,
     timeout_ms: int = 10000,
@@ -312,7 +315,7 @@ def perform_action(
             if not img_src:
                 logger.warning("img has no src")
                 return None
-            img_src = to_absolute_url(page, img_src)
+            img_src = _to_absolute_url(page, img_src)
             logger.info("image url: %s", img_src)
 
             if download_path:
@@ -346,7 +349,7 @@ def perform_action(
                     logger.exception("image screenshot failed")
                     img_src = element.get_attribute("src")
                     if img_src:
-                        img_src = to_absolute_url(page, img_src)
+                        img_src = _to_absolute_url(page, img_src)
                         logger.info("fallback image url: %s", img_src)
                         return img_src
                     return None
@@ -355,7 +358,7 @@ def perform_action(
             if not img_src:
                 logger.warning("img has no src")
                 return None
-            img_src = to_absolute_url(page, img_src)
+            img_src = _to_absolute_url(page, img_src)
             logger.info("image url: %s", img_src)
             return img_src
 
@@ -397,8 +400,13 @@ def perform_action(
 
 
 if __name__ == "__main__":
-    configure_logging()
     with sync_playwright() as p:
+        p: Playwright
         browser = p.chromium.connect_over_cdp("http://127.0.0.1:9222")
         context = browser.contexts[0]
-        list_pages(context)
+        url = 'https://www.coinglass.com/zh/pro/i/ahr999'
+        page = open_page(context, url)
+        element = find_element(page, ("ahr999指标图", "canvas"))
+        shot_path = FileUtils.get_path("images", "canvas.png")
+        save_screenshot(element, shot_path)
+        page.close()
