@@ -16,12 +16,12 @@ PAGELOAD_TIMEOUT_MS = 60000 if not LOCAL_DEV else 10000
 
 def list_pages(context: BrowserContext) -> None:
     pages = list(context.pages)
-    logger.info("open pages: %s", len(pages))
+    logger.info(f"open pages: {len(pages)}")
     for i, page in enumerate(pages, start=1):
         try:
-            logger.info("%s. title=%s url=%s", i, page.title(), page.url)
+            logger.info(f"{i}. title={page.title()} url={page.url}")
         except Exception:
-            logger.exception("%s. failed to read page info", i)
+            logger.exception(f"{i}. failed to read page info")
 
 
 def find_pages_by_title(context: BrowserContext, title_keyword: str) -> List[Dict[str, Any]]:
@@ -63,9 +63,9 @@ def open_page(context: BrowserContext, url: str, *, listener: Any = None):
     except Exception:
         pass
     try:
-        logger.info("page loaded: %s", page.title())
+        logger.info(f"page loaded: {page.title()}")
     except Exception:
-        logger.info("page loaded: %s", page.url)
+        logger.info(f"page loaded: {page.url}")
     return page
 
 
@@ -96,17 +96,17 @@ def activate_page(
         common_urls = title_urls & url_urls
         matches = [p for p in matches_by_title if p["url"] in common_urls]
         if not matches:
-            logger.warning("no page matched title=%r and url=%r", title_keyword, url_keyword)
+            logger.warning(f"no page matched title={title_keyword} and url={url_keyword}")
             return None
     elif title_keyword:
         matches = matches_by_title
         if not matches:
-            logger.warning("no page matched title=%r", title_keyword)
+            logger.warning(f"no page matched title={title_keyword}")
             return None
     else:
         matches = matches_by_url
         if not matches:
-            logger.warning("no page matched url=%r", url_keyword)
+            logger.warning(f"no page matched url={url_keyword}")
             return None
 
     if close_other_pages and len(matches) > 1:
@@ -116,11 +116,11 @@ def activate_page(
             try:
                 page_info["page"].close()
             except Exception:
-                logger.exception("failed to close extra page: %s", page_info.get("url"))
+                logger.exception(f"failed to close extra page: {page_info.get("url")}")
 
     page = matches[0]["page"]
     page.bring_to_front()
-    logger.info("activated page: title=%s url=%s", page.title(), page.url)
+    logger.info(f"activated page: title={page.title()} url={page.url}")
 
     if refresh:
         try:
@@ -130,23 +130,23 @@ def activate_page(
                 page.wait_for_load_state("networkidle", timeout=PAGELOAD_TIMEOUT_MS)
             except Exception:
                 pass
-            logger.info("page refreshed: %s", page.title())
+            logger.info(f"page refreshed: {page.title()}")
         except Exception:
             logger.exception("page refresh failed")
             return None
 
     if new_url:
         page.goto(new_url)
-        logger.info("navigated to: %s", new_url)
+        logger.info(f"navigated to: {new_url}")
         page.wait_for_load_state("domcontentloaded", timeout=PAGELOAD_TIMEOUT_MS)
         try:
             page.wait_for_load_state("networkidle", timeout=PAGELOAD_TIMEOUT_MS)
         except Exception:
             pass
         try:
-            logger.info("page loaded: %s", page.title())
+            logger.info(f"page loaded: {page.title()}")
         except Exception:
-            logger.info("page loaded: %s", page.url)
+            logger.exception(f"page loaded: {page.url}")
         return page
 
     return page
@@ -185,7 +185,7 @@ def scroll_by(page: Page, delta_y: int) -> bool:
 
 
 def find_element(
-    page: Page,
+    parent: Page | Locator,
     element_info: tuple[str, str],  # 元组：(名称, CSS选择器)
     *,
     timeout_ms: int = 10000,
@@ -193,17 +193,17 @@ def find_element(
 ):
     try:
         ele_name, ele_selector = element_info
-        logger.info("finding element: %s (%s)", ele_name, ele_selector)
-        element = page.locator(ele_selector)
+        logger.info(f"finding element: {ele_name} ({ele_selector})")
+        element = parent.locator(ele_selector)
         element.wait_for(timeout=timeout_ms, state=state)
         # element = page.wait_for_selector(ele_selector, timeout=timeout_ms, state='visible')
         if element:
-            logger.info("element found: %s, state=%s", ele_name, state)
+            logger.info(f"element found: {ele_name}, state={state}")
             return element
-        logger.info("element not found: %s", element_info)
+        logger.info(f"element not found: {element_info}")
         return None
     except Exception:
-        logger.exception("find element failed: %s", element_info)
+        logger.exception(f"find element failed: {element_info}")
         return None
 
 def save_screenshot(element: Locator, path: str):
@@ -254,34 +254,34 @@ def perform_action(
         if not element:
             return None
 
-        logger.info("action=%s element=%s state=%s", action, element_info, state)
+        logger.info(f"action={action} element={ele_name} state={state}")
 
         if action == "click":
             element.hover()
             sleep(0.5)
             element.click()
-            logger.info("clicked: %s", ele_name)
+            logger.info(f"clicked: {ele_name}")
             return True
 
         if action == "click_only":
             element.click()
-            logger.info("clicked: %s", ele_name)
+            logger.info(f"clicked: {ele_name}")
             return True
 
         if action == "get_text":
             text_value = element.text_content()
-            logger.info("text: %s", text_value)
+            logger.info(f"text: {text_value}")
             return text_value
 
         if action == "get_inner_text":
             text_value = element.inner_text()
-            logger.info("inner text: %s", text_value)
+            logger.info(f"inner text: {text_value}")
             return text_value
 
         if action == "get_inner_html":
             html_value = element.inner_html()
             preview = html_value[:100] + "..." if html_value and len(html_value) > 100 else html_value
-            logger.info("inner html: %s", preview)
+            logger.info(f"inner html: {preview}")
             return html_value
 
         if action == "get_attribute":
@@ -289,7 +289,7 @@ def perform_action(
                 logger.warning("get_attribute requires value=<attr_name>")
                 return None
             attr_value = element.get_attribute(value)
-            logger.info("attribute %s=%s", value, attr_value)
+            logger.info(f"attribute {value}={attr_value}")
             return attr_value
 
         if action == "input_text":
@@ -297,18 +297,18 @@ def perform_action(
                 logger.warning("input_text requires value=<text>")
                 return False
             element.fill(value)
-            logger.info("filled text")
+            logger.info(f"filled text: {value}")
             return True
 
         if action == "clear_input":
             element.fill("")
-            logger.info("cleared input: %s", ele_name)
+            logger.info(f"cleared input: {ele_name}")
             return True
 
         if action == "get_image":
             tag_name = element.evaluate("el => el.tagName.toLowerCase()")
             if tag_name != "img":
-                logger.warning("not img element: %s", tag_name)
+                logger.warning(f"not img element: {tag_name}")
                 return None
 
             img_src = element.get_attribute("src")
@@ -316,7 +316,7 @@ def perform_action(
                 logger.warning("img has no src")
                 return None
             img_src = _to_absolute_url(page, img_src)
-            logger.info("image url: %s", img_src)
+            logger.info(f"image url: {img_src}")
 
             if download_path:
                 try:
@@ -325,17 +325,17 @@ def perform_action(
                     response.raise_for_status()
                     with open(download_path, "wb") as f:
                         f.write(response.content)
-                    logger.info("image downloaded: %s", download_path)
+                    logger.info(f"image downloaded: {download_path}")
                     return download_path
                 except Exception:
-                    logger.exception("image download failed")
+                    logger.exception(f"image download failed")
                     return img_src
             return img_src
 
         if action == "get_image_screenshot":
             tag_name = element.evaluate("el => el.tagName.toLowerCase()")
             if tag_name != "img":
-                logger.warning("not img element: %s", tag_name)
+                logger.warning(f"not img element: {tag_name}")
                 return None
 
             if download_path:
@@ -343,14 +343,14 @@ def perform_action(
                     os.makedirs(os.path.dirname(download_path), exist_ok=True)
                     # element.wait_for_element_state("stable")
                     element.screenshot(path=download_path)
-                    logger.info("image screenshot saved: %s", download_path)
+                    logger.info(f"image screenshot saved: {download_path}")
                     return download_path
                 except Exception:
-                    logger.exception("image screenshot failed")
+                    logger.exception(f"image screenshot failed: {download_path}")
                     img_src = element.get_attribute("src")
                     if img_src:
                         img_src = _to_absolute_url(page, img_src)
-                        logger.info("fallback image url: %s", img_src)
+                        logger.info(f"fallback image url: {img_src}")
                         return img_src
                     return None
 
@@ -359,43 +359,43 @@ def perform_action(
                 logger.warning("img has no src")
                 return None
             img_src = _to_absolute_url(page, img_src)
-            logger.info("image url: %s", img_src)
+            logger.info(f"image url: {img_src}")
             return img_src
 
         if action == "hover":
             element.hover()
-            logger.info("hovered: %s", ele_name)
+            logger.info(f"hovered: {ele_name}")
             return True
 
         if action == "double_click":
             element.dblclick()
-            logger.info("double clicked: %s", ele_name)
+            logger.info(f"double clicked: {ele_name}")
             return True
 
         if action == "right_click":
             element.click(button="right")
-            logger.info("right clicked: %s", ele_name)
+            logger.info(f"right clicked: {ele_name}")
             return True
 
         if action == "scroll_into_view":
             element.scroll_into_view_if_needed()
-            logger.info("scrolled into view: %s", ele_name)
+            logger.info(f"scrolled into view: {ele_name}")
             return True
 
         if action == "is_visible":
             result = element.is_visible()
-            logger.info("is visible=%s", result)
+            logger.info(f"is visible={result}")
             return result
 
         if action == "is_enabled":
             result = element.is_enabled()
-            logger.info("is enabled=%s", result)
+            logger.info(f"is enabled={result}")
             return result
 
-        logger.warning("unsupported action: %s", action)
+        logger.warning(f"unsupported action: {action}")
         return None
     except Exception:
-        logger.exception("perform_action failed: %s (%s)", ele_name, action)
+        logger.exception(f"perform_action failed: {ele_name}")
         return None
 
 

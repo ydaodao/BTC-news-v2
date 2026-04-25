@@ -69,10 +69,10 @@ class DateUtils:
 
     # -- 转换：字符串转字符串 --
     @staticmethod
-    def str_to_str(date_str: str, orgin_fmt: str = FMT_STD, target_fmt: str = FMT_STD) -> str:
+    def str_to_str(date_str: str, from_fmt: str = FMT_STD, to_fmt: str = FMT_STD) -> str:
         """将日期字符串格式化为另一个日期字符串"""
-        dt = DateUtils.str_to_datetime(date_str, orgin_fmt)
-        return DateUtils.datetime_to_str(dt, target_fmt)
+        dt = DateUtils.str_to_datetime(date_str, from_fmt)
+        return DateUtils.datetime_to_str(dt, to_fmt)
 
 
 
