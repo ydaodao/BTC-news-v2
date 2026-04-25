@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 环境变量和密钥
+.env
+.env.*
+
+# 数据库
+*.backup.db
+*.db
+# *.sqlite3
+
+# VS Code
+.vscode/
+.venv/
