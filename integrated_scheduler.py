@@ -150,7 +150,7 @@ def start_cron_scheduler():
 if __name__ == "__main__":
     if LOCAL_DEV:
         logger.info("本地开发模式，不启动 cron 调度器")
-        # keep_gzh_online_task()
+        fetch_and_push_ahr999_card()
         # run_main_task('daily_news')
     else:
         start_cron_scheduler()     # 使用新的 cron 调度器
