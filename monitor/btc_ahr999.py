@@ -20,7 +20,7 @@ from utils.date_utils import DateUtils
 # ========================
 # 2. 抓取数据
 # ========================
-def fetch_ahr999_img():
+def fetch_and_push_ahr999_img():
     logger.info("获取ahr999趋势的网页截图")
     image_path = None
     latest_data = None
@@ -70,7 +70,7 @@ def parse_ahr999_data(page: Page):
     avg_cost = int(float(tr_avg_cost))
     btc_price = int(float(tr_btc_price))
 
-    latest_data = f"{date}：{btc_price}    AHR999：{ahr999}"
+    latest_data = f"{date}：${btc_price}    AHR999：{ahr999}"
     logger.info(f"最新数据: {latest_data}")
     return latest_data
 
@@ -89,7 +89,7 @@ def parse_ahr999_data(page: Page):
 # 5. 主循环（定时运行）
 # ========================
 def main():
-    fetch_ahr999_img()
+    fetch_and_push_ahr999_img()
 
 if __name__ == "__main__":
     main()
