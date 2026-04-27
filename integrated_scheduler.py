@@ -126,7 +126,7 @@ cron_scheduler = CronScheduler()
 def fetch_and_push_ahr999_card():
     """执行获取并推送ahr999趋势卡片的任务"""
     logger.info(f"执行任务: fetch_and_push_ahr999_card")
-    asyncio.run(fetch_and_push_ahr999_img())
+    fetch_and_push_ahr999_img()
 # ------------ 任务结束 ------------------
 
 def setup_cron_jobs():
