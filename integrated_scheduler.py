@@ -4,7 +4,7 @@ import os
 import asyncio
 from croniter import croniter
 from loguru import logger
-from monitor.btc_ahr999 import fetch_and_push_ahr999_img
+from monitor.btc_info_monitor import fetch_and_push_btc_info
 
 # 加载环境变量
 from dotenv import load_dotenv
@@ -127,7 +127,7 @@ cron_scheduler = CronScheduler()
 def fetch_and_push_ahr999_card():
     """执行获取并推送ahr999趋势卡片的任务"""
     logger.info(f"执行任务: fetch_and_push_ahr999_card")
-    fetch_and_push_ahr999_img()
+    fetch_and_push_btc_info()
 # ------------ 任务结束 ------------------
 
 def setup_cron_jobs():
