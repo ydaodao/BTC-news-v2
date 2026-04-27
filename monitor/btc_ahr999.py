@@ -70,7 +70,7 @@ def parse_ahr999_data(page: Page):
     avg_cost = int(float(tr_avg_cost))
     btc_price = int(float(tr_btc_price))
 
-    latest_data = f"{date}：${btc_price}    AHR999：{ahr999}"
+    latest_data = f"${btc_price}    AHR999：{ahr999}"
     logger.info(f"最新数据: {latest_data}")
     return latest_data
 
