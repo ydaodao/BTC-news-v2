@@ -47,30 +47,30 @@ class CronScheduler:
             }
             
             self.jobs.append(job)
-            print(f"已添加 cron 任务: {job['job_name']} ({cron_expression})")
-            print(f"下次执行时间: {next_run.strftime('%Y-%m-%d %H:%M:%S')}")
+            logger.info(f"已添加 cron 任务: {job['job_name']} ({cron_expression})")
+            logger.info(f"下次执行时间: {next_run.strftime('%Y-%m-%d %H:%M:%S')}")
             
         except Exception as e:
-            print(f"添加 cron 任务失败: {e}")
+            logger.error(f"添加 cron 任务失败: {e}")
     
     def remove_job(self, job_name):
         """移除指定名称的任务"""
         self.jobs = [job for job in self.jobs if job['job_name'] != job_name]
-        print(f"已移除任务: {job_name}")
+        logger.info(f"已移除任务: {job_name}")
     
     def list_jobs(self):
         """列出所有任务"""
         if not self.jobs:
-            print("当前没有定时任务")
+            logger.info("当前没有定时任务")
             return
             
-        print("\n当前定时任务列表:")
-        print("-" * 80)
+        logger.info("\n当前定时任务列表:")
+        logger.info("-" * 80)
         for job in self.jobs:
-            print(f"任务名称: {job['job_name']}")
-            print(f"Cron表达式: {job['cron_expression']}")
-            print(f"下次执行: {job['next_run'].strftime('%Y-%m-%d %H:%M:%S')}")
-            print("-" * 80)
+            logger.info(f"任务名称: {job['job_name']}")
+            logger.info(f"Cron表达式: {job['cron_expression']}")
+            logger.info(f"下次执行: {job['next_run'].strftime('%Y-%m-%d %H:%M:%S')}")
+            logger.info("-" * 80)
     
     def run_pending(self):
         """检查并执行到期的任务"""
@@ -79,7 +79,7 @@ class CronScheduler:
         for job in self.jobs:
             if now >= job['next_run']:
                 try:
-                    print(f"\n[{now.strftime('%Y-%m-%d %H:%M:%S')}] 执行 cron 任务: {job['job_name']}")
+                    logger.info(f"\n[{now.strftime('%Y-%m-%d %H:%M:%S')}] 执行 cron 任务: {job['job_name']}")
                     
                     # 执行任务
                     if asyncio.iscoroutinefunction(job['job_func']):
@@ -87,7 +87,7 @@ class CronScheduler:
                     else:
                         job['job_func'](*job['args'], **job['kwargs'])
                     
-                    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 任务 {job['job_name']} 执行完成")
+                    logger.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 任务 {job['job_name']} 执行完成")
                     
                 except Exception as e:
                     error_msg = f"执行 cron 任务 {job['job_name']} 失败: {e}"
@@ -97,19 +97,19 @@ class CronScheduler:
                 job['cron_iter'] = croniter(job['cron_expression'], datetime.now())
                 # 计算下次执行时间
                 job['next_run'] = job['cron_iter'].get_next(datetime)
-                print(f"任务 {job['job_name']} 下次执行时间: {job['next_run'].strftime('%Y-%m-%d %H:%M:%S')}")
+                logger.info(f"任务 {job['job_name']} 下次执行时间: {job['next_run'].strftime('%Y-%m-%d %H:%M:%S')}")
     
     def start(self):
         """启动调度器"""
         self.running = True
-        print("Cron 调度器已启动")
+        logger.info("Cron 调度器已启动")
         
         try:
             while self.running:
                 self.run_pending()
                 time.sleep(30)  # 每30秒检查一次
         except KeyboardInterrupt:
-            print("\nCron 调度器已停止")
+            logger.info("\nCron 调度器已停止")
         except Exception as e:
             error_msg = f"Cron 调度器运行出错: {e}"
             logger.error(error_msg)
@@ -117,6 +117,7 @@ class CronScheduler:
     def stop(self):
         """停止调度器"""
         self.running = False
+        logger.info("Cron 调度器已停止")
 
 # 创建全局 cron 调度器实例
 cron_scheduler = CronScheduler()
