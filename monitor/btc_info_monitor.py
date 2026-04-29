@@ -1,3 +1,4 @@
+import re
 from playwright.sync_api import Page
 import time
 from loguru import logger
@@ -31,10 +32,11 @@ def fetch_and_push_btc_info():
         p: Playwright
         browser = p.chromium.connect_over_cdp("http://127.0.0.1:9222")
         context = browser.contexts[0]
+        context.set_default_timeout(60000)
         
         ahr999_latest_data, ahr999_image_key = fetch_ahr999_info(context, client)
         pm_clarity_latest_data, pm_clarity_image_key = fetch_pm_clarity_info(context, client)
-        # calshi_clarity_latest_data, calshi_clarity_image_path = fetch_calshi_clarity_info(context)
+        calshi_clarity_latest_data, calshi_clarity_image_key = fetch_calshi_clarity_info(context, client)
         
     if ahr999_image_key:
         bot = MsgBotService()
@@ -49,6 +51,12 @@ def fetch_and_push_btc_info():
             "pm_clarity_img_key": {
                 "img_key": pm_clarity_image_key
             },
+            "calshi_clarity_desc": calshi_clarity_latest_data,
+            "calshi_clarity_img_key": {
+                "img_key": calshi_clarity_image_key
+            },
+            "primary_btn_text": "待定",
+            "secondary_btn_text": "待定",
         }
         bot.send_common_card(template_variable=template_variable)
 
@@ -93,11 +101,11 @@ def fetch_pm_clarity_info(context: BrowserContext, client: lark.Client):
     page = open_page(context, url)
 
     # 获取指标图
-    ele_pm_clarity_img = find_element(page, ("pm clarity指标图", "#group-chart-container"))
+    ele_pm_clarity_img = find_element(page, ("pm clarity指标图", "#group-chart-container")).locator("..")
     image_path = FileUtils.get_path("images", "pm_clarity.png")
     save_screenshot(ele_pm_clarity_img, image_path)
     image_key = upload_image(client, image_path)
-    logger.info(f"最新指标图: {image_path}, {image_key}")
+    logger.info(f"pm clarity指标图: {image_path}, {image_key}")
 
     # 获取最新概率数据
     target_locator = (
@@ -107,8 +115,8 @@ def fetch_pm_clarity_info(context: BrowserContext, client: lark.Client):
         .locator("xpath=preceding-sibling::span[1]")
     )
     target_locator.highlight()  # 调试时很有用，会让元素闪烁
-    logger.info(f"最新概率数据: {target_locator.inner_text()}")
-    latest_data = f"最新polymarket概率: {target_locator.inner_text()}%"
+    logger.info(f"polymarket概率: {target_locator.inner_text()}%")
+    latest_data = f"PM概率: {target_locator.inner_text()}%"
     # 操作该元素
 
     page.close()
@@ -118,19 +126,24 @@ def fetch_calshi_clarity_info(context: BrowserContext, client: lark.Client):
     """获取calshi clarity数据"""
     url = 'https://kalshi.com/markets/kxcryptostructure/crypto-market-structure/kxcryptostructure-26jan'
     page = open_page(context, url)
+    # 获取锚点
+    vol_anchor = page.locator("span").filter(has_text=re.compile(r"\$.*vol"))
 
-    # 获取指标图
-    ele_calshi_clarity_img = find_element(page, ("calshi clarity指标图", "#group-chart-container"))
+    # 获取calshi clarity预测趋势图
+    calshi_clarity_chart = vol_anchor.locator("..").locator("..").locator("..").locator("..").locator("..")
+    calshi_clarity_data = calshi_clarity_chart.locator(">div:nth-child(1)")
     image_path = FileUtils.get_path("images", "calshi_clarity.png")
-    save_screenshot(ele_calshi_clarity_img, image_path)
+    save_screenshot(calshi_clarity_chart, image_path)
     image_key = upload_image(client, image_path)
-    logger.info(f"最新指标图: {image_path}, {image_key}")
+    logger.info(f"calshi clarity指标图: {image_path}, {image_key}")
 
-    # 获取最新数据
-    # latest_data = parse_calshi_clarity_data(page)
-
+    # 获取calshi clarity预测趋势图数据
+    calshi_clarity_data_text = calshi_clarity_data.inner_text().replace("\n", " ")
+    logger.info(f"calshi_clarity_data_text: {calshi_clarity_data_text}")
+    latest_data = f"calshi概率: {calshi_clarity_data_text}"
+    
     page.close()
-    return None, image_path
+    return latest_data, image_key
 
 # ========================
 # 3. 解析你需要的指标

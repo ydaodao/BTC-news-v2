@@ -1,4 +1,4 @@
-import os
+import os, re
 from time import sleep
 from typing import Any, Dict, List, Optional
 from urllib.parse import urljoin, urlparse
@@ -11,7 +11,7 @@ load_dotenv(find_dotenv())
 
 
 LOCAL_DEV = os.getenv("LOCAL_DEV") == "true"
-PAGELOAD_TIMEOUT_MS = 60000 if not LOCAL_DEV else 10000
+PAGELOAD_TIMEOUT_MS = 60000 if not LOCAL_DEV else 60000
 
 
 def list_pages(context: BrowserContext) -> None:
@@ -50,23 +50,32 @@ def find_pages_by_url(context, url_keyword: str) -> List[Dict[str, Any]]:
     return matches
 
 
-def open_page(context: BrowserContext, url: str, *, listener: Any = None):
-    page = context.new_page()
-    if listener:
-        page.on("response", listener.handle_response)
-    page.goto(url)
-    page.bring_to_front()
-
-    page.wait_for_load_state("domcontentloaded", timeout=PAGELOAD_TIMEOUT_MS)
-    try:
-        page.wait_for_load_state("networkidle", timeout=PAGELOAD_TIMEOUT_MS)
-    except Exception:
-        pass
-    try:
-        logger.info(f"page loaded: {page.title()}")
-    except Exception:
-        logger.info(f"page loaded: {page.url}")
-    return page
+def open_page(context: BrowserContext, url: str, *, listener: Any = None, retries: int = 2):
+    for i in range(retries + 1):
+        page = context.new_page()
+        if listener:
+            page.on("response", listener.handle_response)
+        try:
+            # 尝试访问
+            page.goto(url, wait_until="commit") # 先等 commit
+            page.bring_to_front()
+            
+            # 分段等待
+            page.wait_for_load_state("domcontentloaded", timeout=PAGELOAD_TIMEOUT_MS)
+            logger.info(f"page domcontentloaded: {page.title()}")
+            try:
+                page.wait_for_load_state("networkidle", timeout=5000) # 给 5 秒即可，不用太长
+                logger.info(f"page networkidle: {page.title()}")
+            except:
+                pass
+            return page
+        except Exception as e:
+            page.close()
+            if i == retries:
+                logger.error(f"最终加载失败: {e}")
+                raise e
+            logger.warning(f"连接失败，正在进行第 {i+1} 次重试...")
+            sleep(2) # 等待一下再重试
 
 
 def activate_page(
@@ -404,9 +413,17 @@ if __name__ == "__main__":
         p: Playwright
         browser = p.chromium.connect_over_cdp("http://127.0.0.1:9222")
         context = browser.contexts[0]
-        url = 'https://www.coinglass.com/zh/pro/i/ahr999'
+        url = 'https://kalshi.com/markets/kxcryptostructure/crypto-market-structure/kxcryptostructure-26jan'
         page = open_page(context, url)
-        element = find_element(page, ("ahr999指标图", "canvas"))
-        shot_path = FileUtils.get_path("images", "canvas.png")
-        save_screenshot(element, shot_path)
-        page.close()
+        vol_anchor = page.locator("span").filter(has_text=re.compile(r"\$.*vol"))
+        calshi_clarity_chart = vol_anchor.locator("..").locator("..").locator("..").locator("..").locator("..")
+        calshi_clarity_data = calshi_clarity_chart.locator(">div:nth-child(1)")
+        calshi_clarity_data.highlight()
+        
+        # calshi_clarity_data_text = calshi_clarity_data.inner_text().replace("\n", " ")
+        # logger.info(f"calshi_clarity_data_text: {calshi_clarity_data_text}")
+        
+        # element = find_element(page, ("ahr999指标图", "canvas"))
+        shot_path = FileUtils.get_path("images", "calshi_clarity.png")
+        save_screenshot(calshi_clarity_chart, shot_path)
+        # page.close()
