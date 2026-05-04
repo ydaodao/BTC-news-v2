@@ -124,9 +124,9 @@ cron_scheduler = CronScheduler()
 
 # ------------ 任务设置 ------------------
 
-def fetch_and_push_btc_info():
+def fetch_and_push_btc_info_task():
     """执行获取并推送BTC资讯的任务"""
-    logger.info(f"执行任务: fetch_and_push_btc_info")
+    logger.info(f"执行任务: fetch_and_push_btc_info_task")
     fetch_and_push_btc_info()
 # ------------ 任务结束 ------------------
 
@@ -137,7 +137,7 @@ def setup_cron_jobs():
     # 格式：分 时 日 月 周 (0-59 0-23 1-31 1-12 0-7，其中0和7都表示周日)
     
     # 每天早上7:00执行获取并推送BTC资讯任务
-    cron_scheduler.add_cron_job('0 7 * * *', fetch_and_push_btc_info, '获取并推送BTC资讯任务')
+    cron_scheduler.add_cron_job('0 7 * * *', fetch_and_push_btc_info_task, '获取并推送BTC资讯任务')
 
     # 每周一、二、三、四、五的7:00执行 日报任务
     # cron_scheduler.add_cron_job('0 7 * * 1,2,3,4,5,6,7', lambda: run_main_task("daily_news"), '日报任务')
