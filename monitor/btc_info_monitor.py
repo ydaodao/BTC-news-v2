@@ -43,22 +43,25 @@ def fetch_and_push_btc_info():
         logger.info("发送ahr999趋势的网页截图")
         template_variable = {
             "card_title": f'{DateUtils.now_str(fmt="%m.%d")} 加密数据',
-            "ahr999_desc": ahr999_latest_data,
-            "ahr999_img_key": {
-                "img_key": ahr999_image_key
-            },
-            "pm_clarity_desc": pm_clarity_latest_data,
-            "pm_clarity_img_key": {
-                "img_key": pm_clarity_image_key
-            },
-            "calshi_clarity_desc": calshi_clarity_latest_data,
-            "calshi_clarity_img_key": {
-                "img_key": calshi_clarity_image_key
-            },
-            "primary_btn_text": "待定",
-            "secondary_btn_text": "待定",
+            "list": [
+                {
+                    "title": "ahr999指标",
+                    "desc": ahr999_latest_data,
+                    "img_key": {"img_key": ahr999_image_key}
+                },
+                {
+                    "title": "pm_clarity",
+                    "desc": pm_clarity_latest_data,
+                    "img_key": {"img_key": pm_clarity_image_key}
+                },
+                {
+                    "title": "calshi_clarity",
+                    "desc": calshi_clarity_latest_data,
+                    "img_key": {"img_key": calshi_clarity_image_key}
+                },
+            ]
         }
-        bot.send_common_card(template_variable=template_variable)
+        bot.send_general_card(template_variable=template_variable)
 
 def fetch_ahr999_info(context: BrowserContext, client: lark.Client):
     """获取ahr999数据"""
@@ -116,7 +119,7 @@ def fetch_pm_clarity_info(context: BrowserContext, client: lark.Client):
     )
     target_locator.highlight()  # 调试时很有用，会让元素闪烁
     logger.info(f"polymarket概率: {target_locator.inner_text()}%")
-    latest_data = f"PM概率: {target_locator.inner_text()}%"
+    latest_data = f"polymarket预测26年Clarity概率：{target_locator.inner_text()}%"
     # 操作该元素
 
     page.close()
@@ -126,6 +129,7 @@ def fetch_calshi_clarity_info(context: BrowserContext, client: lark.Client):
     """获取calshi clarity数据"""
     url = 'https://kalshi.com/markets/kxcryptostructure/crypto-market-structure/kxcryptostructure-26jan'
     page = open_page(context, url)
+    page.wait_for_timeout(5000)
     # 获取锚点
     vol_anchor = page.locator("span").filter(has_text=re.compile(r"\$.*vol"))
 
@@ -140,7 +144,7 @@ def fetch_calshi_clarity_info(context: BrowserContext, client: lark.Client):
     # 获取calshi clarity预测趋势图数据
     calshi_clarity_data_text = calshi_clarity_data.inner_text().replace("\n", " ")
     logger.info(f"calshi_clarity_data_text: {calshi_clarity_data_text}")
-    latest_data = f"calshi概率: {calshi_clarity_data_text}"
+    latest_data = f"Calshi预测Clarity概率: {calshi_clarity_data_text}"
     
     page.close()
     return latest_data, image_key

@@ -19,21 +19,22 @@ from feishu.robot_utils import send_message, template_card_content, build_client
 @dataclass(frozen=True)
 class BotTemplates:
     btc_news_chat_id: str
-    btc_info_card_id: str
+    ## 通用图文卡片的ID
+    general_card_id: str
 
 def load_bot_templates() -> BotTemplates:
     btc_news_chat_id = os.getenv("FEISHU_BTCNEWS_CHAT_ID", "")
-    btc_info_card_id = os.getenv("FEISHU_BTCINFO_CARD_ID", "")
+    general_card_id = os.getenv("FEISHU_GENERAL_CARD_ID", "")
 
     if not btc_news_chat_id:
         raise ValueError("FEISHU_BTCNEWS_CHAT_ID is required")
 
-    if not btc_info_card_id:
-        raise ValueError("FEISHU_BTCINFO_CARD_ID is required")
+    if not general_card_id:
+        raise ValueError("FEISHU_GENERAL_CARD_ID is required")
 
     return BotTemplates(
         btc_news_chat_id=btc_news_chat_id,
-        btc_info_card_id=btc_info_card_id
+        general_card_id=general_card_id
     )
 
 class MsgBotService:
@@ -43,9 +44,9 @@ class MsgBotService:
     def __init__(self, client: lark.Client = None):
         self.client = client or build_client(load_settings())
     
-    def send_common_card(self, chat_id: str = templates.btc_news_chat_id, template_variable: dict = None):
+    def send_general_card(self, chat_id: str = templates.btc_news_chat_id, template_variable: dict = None):
         content = template_card_content(
-            template_id=self.templates.btc_info_card_id,
+            template_id=self.templates.general_card_id,
             template_variable=template_variable,
         )
         response: CreateMessageResponse = send_message(self.client, "chat_id", chat_id, "interactive", content)

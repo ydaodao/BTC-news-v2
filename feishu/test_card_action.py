@@ -13,8 +13,8 @@ def ws_client_start():
 
     ws_client.start()
 
-def test_send_common_card():
-    logger.info("Testing send_common_card...")
+def test_send_general_card():
+    logger.info("Testing send_general_card...")
     template_variable = {
         "card_title": "测试标题",
         "card_desc": "测试内容",
@@ -23,9 +23,9 @@ def test_send_common_card():
         }
     }
     msg_bot = MsgBotService(client=client)
-    msg_bot.send_common_card(template_variable=template_variable)
-    logger.info("send_common_card success")
+    msg_bot.send_general_card(template_variable=template_variable)
+    logger.info("send_general_card success")
 
 if __name__ == "__main__":
     # ws_client_start()
-    test_send_common_card()
+    test_send_general_card()

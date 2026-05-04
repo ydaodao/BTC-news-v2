@@ -1,4 +1,5 @@
-import os, re
+import os
+import random
 from time import sleep
 from typing import Any, Dict, List, Optional
 from urllib.parse import urljoin, urlparse
@@ -11,9 +12,19 @@ load_dotenv(find_dotenv())
 
 
 LOCAL_DEV = os.getenv("LOCAL_DEV") == "true"
-PAGELOAD_TIMEOUT_MS = 60000 if not LOCAL_DEV else 60000
+PAGELOAD_TIMEOUT_MS = 60000 if not LOCAL_DEV else 10000
 
+# 防封
+def smart_click(locator):
+    """带随机延迟的点击，模拟真人思考和操作"""
+    # 点击前的“瞄准”时间
+    sleep(random.uniform(0.3, 0.8))
+    # 执行点击 (增加按压延迟)
+    locator.click(delay=random.randint(100, 300))
+    # 点击后的“反应”时间
+    sleep(random.uniform(1.0, 2.0))
 
+# -------------- 读取页面信息
 def list_pages(context: BrowserContext) -> None:
     pages = list(context.pages)
     logger.info(f"open pages: {len(pages)}")
@@ -24,32 +35,32 @@ def list_pages(context: BrowserContext) -> None:
             logger.exception(f"{i}. failed to read page info")
 
 
-def find_pages_by_title(context: BrowserContext, title_keyword: str) -> List[Dict[str, Any]]:
+def find_pages_by_title(context: BrowserContext, title_keyword: str) -> List[Page]:
     keyword = title_keyword.lower()
-    matches: List[Dict[str, Any]] = []
+    matches: List[Page] = []
     for page in context.pages:
         try:
             page_title = page.title()
             if keyword in page_title.lower():
-                matches.append({"page": page, "title": page_title, "url": page.url})
+                matches.append(page)
         except Exception:
             logger.exception("failed to read page title")
     return matches
 
 
-def find_pages_by_url(context, url_keyword: str) -> List[Dict[str, Any]]:
+def find_pages_by_url(context: BrowserContext, url_keyword: str) -> List[Page]:
     keyword = url_keyword.lower()
-    matches: List[Dict[str, Any]] = []
+    matches: List[Page] = []
     for page in context.pages:
         try:
             page_url = page.url
             if keyword in page_url.lower():
-                matches.append({"page": page, "title": page.title(), "url": page_url})
+                matches.append(page)
         except Exception:
             logger.exception("failed to read page info")
     return matches
 
-
+# -------------- 打开页面
 def open_page(context: BrowserContext, url: str, *, listener: Any = None, retries: int = 2):
     for i in range(retries + 1):
         page = context.new_page()
@@ -91,8 +102,8 @@ def activate_page(
         logger.warning("activate_page called without title/url keyword")
         return None
 
-    matches_by_title: List[Dict[str, Any]] = []
-    matches_by_url: List[Dict[str, Any]] = []
+    matches_by_title: List[Page] = []
+    matches_by_url: List[Page] = []
 
     if title_keyword:
         matches_by_title = find_pages_by_title(context, title_keyword)
@@ -100,8 +111,8 @@ def activate_page(
         matches_by_url = find_pages_by_url(context, url_keyword)
 
     if title_keyword and url_keyword:
-        title_urls = {p["url"] for p in matches_by_title}
-        url_urls = {p["url"] for p in matches_by_url}
+        title_urls = {p.url for p in matches_by_title}
+        url_urls = {p.url for p in matches_by_url}
         common_urls = title_urls & url_urls
         matches = [p for p in matches_by_title if p["url"] in common_urls]
         if not matches:
@@ -119,15 +130,15 @@ def activate_page(
             return None
 
     if close_other_pages and len(matches) > 1:
-        for index, page_info in enumerate(matches):
+        for index, page in enumerate(matches):
             if index == 0:
                 continue
             try:
-                page_info["page"].close()
+                page.close()
             except Exception:
-                logger.exception(f"failed to close extra page: {page_info.get("url")}")
+                logger.exception(f"failed to close extra page: {page.url}")
 
-    page = matches[0]["page"]
+    page = matches[0]
     page.bring_to_front()
     logger.info(f"activated page: title={page.title()} url={page.url}")
 
@@ -160,7 +171,7 @@ def activate_page(
 
     return page
 
-
+# -------------- 滚动页面
 def scroll_to_bottom(page: Page) -> Optional[bool]:
     if not page:
         return None
@@ -192,7 +203,7 @@ def scroll_by(page: Page, delta_y: int) -> bool:
         logger.exception("scroll failed")
         return False
 
-
+# -------------- 查找元素
 def find_element(
     parent: Page | Locator,
     element_info: tuple[str, str],  # 元组：(名称, CSS选择器)
@@ -247,6 +258,7 @@ def _to_absolute_url(page: Page, url: Optional[str]) -> Optional[str]:
     logger.info("absolute url (join): %s -> %s", url, absolute_url)
     return absolute_url
 
+# -------------- 执行操作
 def perform_action(
     page: Page,
     element_info: tuple[str, str],  # 元组：(名称, CSS选择器)
@@ -413,17 +425,9 @@ if __name__ == "__main__":
         p: Playwright
         browser = p.chromium.connect_over_cdp("http://127.0.0.1:9222")
         context = browser.contexts[0]
-        url = 'https://kalshi.com/markets/kxcryptostructure/crypto-market-structure/kxcryptostructure-26jan'
+        url = 'https://www.coinglass.com/zh/pro/i/ahr999'
         page = open_page(context, url)
-        vol_anchor = page.locator("span").filter(has_text=re.compile(r"\$.*vol"))
-        calshi_clarity_chart = vol_anchor.locator("..").locator("..").locator("..").locator("..").locator("..")
-        calshi_clarity_data = calshi_clarity_chart.locator(">div:nth-child(1)")
-        calshi_clarity_data.highlight()
-        
-        # calshi_clarity_data_text = calshi_clarity_data.inner_text().replace("\n", " ")
-        # logger.info(f"calshi_clarity_data_text: {calshi_clarity_data_text}")
-        
-        # element = find_element(page, ("ahr999指标图", "canvas"))
-        shot_path = FileUtils.get_path("images", "calshi_clarity.png")
-        save_screenshot(calshi_clarity_chart, shot_path)
-        # page.close()
+        element = find_element(page, ("ahr999指标图", "canvas"))
+        shot_path = FileUtils.get_path("images", "canvas.png")
+        save_screenshot(element, shot_path)
+        page.close()
