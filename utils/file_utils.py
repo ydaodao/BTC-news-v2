@@ -6,6 +6,7 @@ import hashlib
 from pathlib import Path
 from datetime import datetime
 from typing import Union, List, Dict, Any
+from loguru import logger
 from dotenv import find_dotenv, load_dotenv
 load_dotenv(find_dotenv())
 
@@ -115,15 +116,25 @@ class FileUtils:
     @staticmethod
     def read_json(path: str) -> Union[Dict, List]:
         """读取 JSON 文件"""
-        with open(path, 'r', encoding='utf-8') as f:
-            return json.load(f)
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            logger.error(f"文件 {path} 不存在")
+            return None
+        except json.JSONDecodeError:
+            logger.error(f"文件 {path} 内容不是有效的 JSON 格式")
+            return None
 
     @staticmethod
     def write_json(path: str, data: Any, indent: int = 4):
         """写入 JSON 文件"""
-        FileUtils.ensure_dir(path)
-        with open(path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=indent)
+        try:
+            FileUtils.ensure_dir(path)
+            with open(path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=indent)
+        except IOError as e:
+            logger.error(f"写入文件 {path} 时发生错误: {e}")
 
     # --- 5. 文件操作 (移动/复制/删除) ---
 

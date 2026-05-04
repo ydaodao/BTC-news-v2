@@ -46,7 +46,7 @@ class BeikeNetworkListener:
     # 检查新获取的房源list，跟存储的差异
     def check_house_diff(self, new_house_list):
         path = FileUtils.get_path("monitor", "beike", "beike_house_list.json")
-        old_house_list = FileUtils.read_json(path) if FileUtils.exists(path) else []
+        old_house_list = FileUtils.read_json(path) or []
 
         new_house_ids = set(item["actionUrl"] for item in new_house_list)
         old_house_ids = set(item["actionUrl"] for item in old_house_list)
