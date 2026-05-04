@@ -5,6 +5,7 @@ import asyncio
 from croniter import croniter
 from loguru import logger
 from monitor.btc_info_monitor import fetch_and_push_btc_info
+from monitor.beike.beike_monitor import begin_crawler as beike_house_monitor
 
 # 加载环境变量
 from dotenv import load_dotenv
@@ -128,6 +129,12 @@ def fetch_and_push_btc_info_task():
     """执行获取并推送BTC资讯的任务"""
     logger.info(f"执行任务: fetch_and_push_btc_info_task")
     fetch_and_push_btc_info()
+
+def beike_house_monitor_task():
+    """执行贝客房屋监控任务"""
+    logger.info(f"执行任务: beike_house_monitor_task")
+    beike_house_monitor()
+
 # ------------ 任务结束 ------------------
 
 def setup_cron_jobs():
@@ -138,6 +145,9 @@ def setup_cron_jobs():
     
     # 每天早上7:00执行获取并推送BTC资讯任务
     cron_scheduler.add_cron_job('0 7 * * *', fetch_and_push_btc_info_task, '获取并推送BTC资讯任务')
+    
+    # 每天早上8:00执行贝客房屋监控任务
+    cron_scheduler.add_cron_job('0 8 * * *', beike_house_monitor_task, '贝壳房屋监控任务')
 
     # 每周一、二、三、四、五的7:00执行 日报任务
     # cron_scheduler.add_cron_job('0 7 * * 1,2,3,4,5,6,7', lambda: run_main_task("daily_news"), '日报任务')

@@ -1,36 +1,5 @@
 [
     {
-        "title": "整租·世纪嘉园 4室1厅",
-        "desc": "180m²|4室1厅2卫|东南|贝壳优选",
-        "tags": [
-            {
-                "desc": "随时看房",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            },
-            {
-                "desc": "新上",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            },
-            {
-                "desc": "双卫生间",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            },
-            {
-                "desc": "押一付一",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            }
-        ],
-        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/23d34e3d37abbf66d82fd024f7626335.jpeg.210x164.jpg?from=ke.com",
-        "priceStr": "10500元/月",
-        "unitPriceStr": "",
-        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2002242560919076864.html",
-        "cardType": "普租"
-    },
-    {
         "title": "整租·亚奥人家 3室2厅",
         "desc": "155m²|3室2厅2卫|东 北|贝壳优选",
         "tags": [
@@ -59,99 +28,6 @@
         "priceStr": "11025元/月",
         "unitPriceStr": "",
         "actionUrl": "https://bj.zu.ke.com/zufang/BJ2012032618228350976.html",
-        "cardType": "普租"
-    },
-    {
-        "title": "整租·惠新苑 3室2厅",
-        "desc": "151m²|3室2厅2卫|南 北|贝壳优选",
-        "tags": [
-            {
-                "desc": "随时看房",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            },
-            {
-                "desc": "新上",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            },
-            {
-                "desc": "双卫生间",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            },
-            {
-                "desc": "押一付一",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            }
-        ],
-        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/dc9f04c03f7b2ef4c94f1d4b876a2976.jpeg.210x164.jpg?from=ke.com",
-        "priceStr": "12100元/月",
-        "unitPriceStr": "",
-        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2100894486358917120.html",
-        "cardType": "普租"
-    },
-    {
-        "title": "整租·望京新城 3室1厅",
-        "desc": "151m²|3室1厅2卫|西 北|链家",
-        "tags": [
-            {
-                "desc": "随时看房",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            },
-            {
-                "desc": "新上",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            },
-            {
-                "desc": "双卫生间",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            },
-            {
-                "desc": "集中供暖",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            }
-        ],
-        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/pc1_7TGraKvl4.jpg.210x164.jpg?from=ke.com",
-        "priceStr": "12000元/月",
-        "unitPriceStr": "",
-        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2161035905207369728.html",
-        "cardType": "普租"
-    },
-    {
-        "title": "整租·望京西园三区 3室2厅",
-        "desc": "150m²|3室2厅2卫|东南|链家",
-        "tags": [
-            {
-                "desc": "新上",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            },
-            {
-                "desc": "双卫生间",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            },
-            {
-                "desc": "集中供暖",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            },
-            {
-                "desc": "精装",
-                "color": "#849AAE",
-                "bgColor": "#EDF0F3"
-            }
-        ],
-        "coverPic": "https://ke-image.ljcdn.com/rent-front-image/151a7143250b0e86e345f85334058ca7.png.210x164.jpg?from=ke.com",
-        "priceStr": "12000元/月",
-        "unitPriceStr": "",
-        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2156698446969438208.html",
         "cardType": "普租"
     },
     {
@@ -186,8 +62,8 @@
         "cardType": "普租"
     },
     {
-        "title": "整租·上京新航线 3室2厅",
-        "desc": "140m²|3室2厅2卫|南 北|贝壳优选",
+        "title": "整租·上林溪 3室2厅",
+        "desc": "141m²|3室2厅2卫|东 南|贝壳优选",
         "tags": [
             {
                 "desc": "随时看房",
@@ -210,10 +86,41 @@
                 "bgColor": "#EDF0F3"
             }
         ],
-        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/8cef7f60-5334-4ab3-ab87-2fbed79b4bd1.jpg.210x164.jpg?from=ke.com",
-        "priceStr": "12000元/月",
+        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/489061fb-167b-4bb8-8116-e59be9f0fe0c.jpg.210x164.jpg?from=ke.com",
+        "priceStr": "10300元/月",
         "unitPriceStr": "",
-        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2033434861632487424.html",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ1985651736202706944.html",
+        "cardType": "普租"
+    },
+    {
+        "title": "整租·北苑家园绣菊园南区 3室1厅",
+        "desc": "139m²|3室1厅2卫|西南|贝壳优选",
+        "tags": [
+            {
+                "desc": "随时看房",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            },
+            {
+                "desc": "新上",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            },
+            {
+                "desc": "双卫生间",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            },
+            {
+                "desc": "押一付一",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            }
+        ],
+        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/735ca25a187b6de6e751e18807bcbe7d.jpeg.210x164.jpg?from=ke.com",
+        "priceStr": "5565元/月",
+        "unitPriceStr": "",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2099099304458190848.html",
         "cardType": "普租"
     },
     {
@@ -279,8 +186,8 @@
         "cardType": "普租"
     },
     {
-        "title": "整租·慧谷阳光 3室1厅",
-        "desc": "129m²|3室1厅2卫|北 南|链家",
+        "title": "整租·华发颐园 3室2厅",
+        "desc": "129m²|3室2厅2卫|南 北|贝壳优选",
         "tags": [
             {
                 "desc": "随时看房",
@@ -298,15 +205,108 @@
                 "bgColor": "#EDF0F3"
             },
             {
-                "desc": "集中供暖",
+                "desc": "押一付一",
                 "color": "#849AAE",
                 "bgColor": "#EDF0F3"
             }
         ],
-        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/pc1_RtS42mpyG.jpg.210x164.jpg?from=ke.com",
+        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/58759df11a6bb447a1c171f7eaca767f.jpeg.210x164.jpg?from=ke.com",
+        "priceStr": "9975元/月",
+        "unitPriceStr": "",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2029173180580495360.html",
+        "cardType": "普租"
+    },
+    {
+        "title": "整租·嘉铭桐城F区 3室1厅",
+        "desc": "128m²|3室1厅2卫|东南 北|链家",
+        "tags": [
+            {
+                "desc": "新上",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            },
+            {
+                "desc": "双卫生间",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            },
+            {
+                "desc": "精装",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            },
+            {
+                "desc": "近地铁",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            }
+        ],
+        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/pc1_shJ1Bi0Em.jpg.210x164.jpg?from=ke.com",
         "priceStr": "12000元/月",
         "unitPriceStr": "",
-        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2159987600507535360.html",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2158112743645773824.html",
+        "cardType": "普租"
+    },
+    {
+        "title": "整租·亚奥金茂悦 3室2厅",
+        "desc": "127m²|3室2厅2卫|南 西|贝壳优选",
+        "tags": [
+            {
+                "desc": "随时看房",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            },
+            {
+                "desc": "新上",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            },
+            {
+                "desc": "双卫生间",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            },
+            {
+                "desc": "押一付一",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            }
+        ],
+        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/pc0_dorRrlc8R.jpg.210x164.jpg?from=ke.com",
+        "priceStr": "11500元/月",
+        "unitPriceStr": "",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2113615110525157376.html",
+        "cardType": "普租"
+    },
+    {
+        "title": "整租·阳光新干线 3室1厅",
+        "desc": "126m²|3室1厅2卫|东 西|贝壳优选",
+        "tags": [
+            {
+                "desc": "首次出租",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            },
+            {
+                "desc": "随时看房",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            },
+            {
+                "desc": "新上",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            },
+            {
+                "desc": "双卫生间",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
+            }
+        ],
+        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/02e2ad42aaa4850605f424513a84a7b3.jpeg.210x164.jpg?from=ke.com",
+        "priceStr": "11000元/月",
+        "unitPriceStr": "",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2157348220521414656.html",
         "cardType": "普租"
     }
 ]
