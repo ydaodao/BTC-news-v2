@@ -146,8 +146,8 @@ def setup_cron_jobs():
     # 每天早上7:00执行获取并推送BTC资讯任务
     cron_scheduler.add_cron_job('0 7 * * *', fetch_and_push_btc_info_task, '获取并推送BTC资讯任务')
     
-    # 每天7:30，13:30，19:30执行贝客房屋监控任务
-    cron_scheduler.add_cron_job('30 7,13,19 * * *', beike_house_monitor_task, '贝壳房屋监控任务')
+    # 每天7:19:30执行贝客房屋监控任务
+    cron_scheduler.add_cron_job('30 7,19 * * *', beike_house_monitor_task, '贝壳房屋监控任务')
 
     # 每周一、二、三、四、五的7:00执行 日报任务
     # cron_scheduler.add_cron_job('0 7 * * 1,2,3,4,5,6,7', lambda: run_main_task("daily_news"), '日报任务')
