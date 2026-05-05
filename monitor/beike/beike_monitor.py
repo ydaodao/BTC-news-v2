@@ -26,13 +26,13 @@ class BeikeNetworkListener:
                 house_list = data.get("data", {}).get("list", [])
                 logger.info(f"解析到{len(house_list)}条房源")
 
-                new_house_list, old_house_list = self.check_house_diff(house_list)
+                new_house_list, _ = self.check_house_diff(house_list)
                 logger.info(f"新增{len(new_house_list)}条房源")
-                logger.info(f"下架{len(old_house_list)}条房源")
+                # logger.info(f"下架{len(old_house_list)}条房源")
                 
-                if len(new_house_list) > 0 or len(old_house_list) > 0:
+                if len(new_house_list) > 0:
                     # 发送房源更新卡片
-                    self.send_general_card(new_house_list, old_house_list)
+                    self.send_general_card(new_house_list, _)
 
                 # 更新最新房源信息
                 self.update_house_info(house_list)
@@ -86,12 +86,9 @@ class BeikeNetworkListener:
             tag = parts[3].strip() if len(parts) > 3 else ""
             return area, room, direction, tag
 
+        template_variable = {"card_title": f'{DateUtils.now_str(fmt="%m.%d")} 房源更新', "list": []}
         # new_house_list 排序，按面积从大到小排序
         new_house_list.sort(key=lambda x: parse_desc(x["desc"])[0], reverse=True)
-        # old_house_list 排序，按面积从大到小排序
-        old_house_list.sort(key=lambda x: parse_desc(x["desc"])[0], reverse=True)
-
-        template_variable = {"card_title": f'{DateUtils.now_str(fmt="%m.%d")} 房源更新', "list": []}
         for i, item in enumerate(new_house_list):
             area, room, direction, tag = parse_desc(item["desc"])
             price = parse_price(item["priceStr"])
@@ -103,14 +100,16 @@ class BeikeNetworkListener:
                 "desc": f"{item['desc']}{other_price_str}"
             })
         
-        for i, item in enumerate(old_house_list):
-            area, room, direction, tag = parse_desc(item["desc"])
-            price = parse_price(item["priceStr"])
-            other_price_str = f"【服务费{int(price//10)}】" if tag == "贝壳优选" else ""
-            template_variable["list"].append({
-                "title": f"{i+1} 下架：{item['title']}，{area}m²，{item["priceStr"]}",
-                "desc": f"{item['desc']}{other_price_str}"
-            })
+        # # old_house_list 排序，按面积从大到小排序
+        # old_house_list.sort(key=lambda x: parse_desc(x["desc"])[0], reverse=True)
+        # for i, item in enumerate(old_house_list):
+        #     area, room, direction, tag = parse_desc(item["desc"])
+        #     price = parse_price(item["priceStr"])
+        #     other_price_str = f"【服务费{int(price//10)}】" if tag == "贝壳优选" else ""
+        #     template_variable["list"].append({
+        #         "title": f"{i+1} 下架：{item['title']}，{area}m²，{item["priceStr"]}",
+        #         "desc": f"{item['desc']}{other_price_str}"
+        #     })
 
         bot = MsgBotService()
         bot.send_general_card(template_variable=template_variable)
