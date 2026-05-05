@@ -95,9 +95,9 @@ class BeikeNetworkListener:
             other_price_str = f"【服务费{int(price//10)}】" if tag == "贝壳优选" else ""
 
             template_variable["list"].append({
-                "title": f"{i+1} 新增：{item['title']}，{area}m²，{item["priceStr"]}",
+                "title": f"{i+1} 新增：{direction}，{area}m²，{item["priceStr"]}",
                 "title_url": item["actionUrl"],
-                "desc": f"{item['desc']}{other_price_str}"
+                "desc": f"{room},{item['title']}{other_price_str}"
             })
         
         # # old_house_list 排序，按面积从大到小排序
