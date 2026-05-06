@@ -15,7 +15,27 @@ LOCAL_DEV = os.getenv("LOCAL_DEV") == "true"
 PAGELOAD_TIMEOUT_MS = 60000 if not LOCAL_DEV else 10000
 
 # 防封
-def smart_click(locator):
+# 反爬措施：随机 sleep
+def random_sleep(a=1, b=3):
+    """随机 sleep 时间，范围 [a, b]"""
+    logger.info(f"random sleep: {random.uniform(a, b)}")
+    sleep(random.uniform(a, b))
+
+# 反爬措施：鼠标移动轨迹、viewport 随机
+def random_mouse_move(page: Page):
+    """随机移动鼠标到页面上的一个位置"""
+    x = random.randint(100, 800)
+    # # 随机设置视口大小
+    # viewport_size = {
+    #     "width": random.randint(1024, 1920),
+    #     "height": random.randint(768, 1080)
+    # }
+    # page.set_viewport_size(viewport_size)
+    y = random.randint(100, 600)
+    page.mouse.move(x, y)
+    random_sleep()
+
+def smart_click(locator: Locator):
     """带随机延迟的点击，模拟真人思考和操作"""
     # 点击前的“瞄准”时间
     sleep(random.uniform(0.3, 0.8))

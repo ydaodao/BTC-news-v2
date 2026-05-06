@@ -1,3 +1,4 @@
+from warnings import deprecated
 from datetime import datetime
 import math
 from datetime import timedelta
@@ -6,7 +7,7 @@ import json
 import yaml
 from utils.file_utils import FileUtils
 from playwright.sync_api import sync_playwright, Playwright
-from utils.playwright_utils import open_page, find_pages_by_url, find_element, smart_click
+from utils.playwright_utils import open_page, find_pages_by_url, find_element, smart_click, random_sleep, random_mouse_move
 from feishu.robot_service import MsgBotService
 from utils.date_utils import DateUtils
 from loguru import logger
@@ -125,6 +126,7 @@ def begin_crawler():
             page.on("response", listener.handle_response)
             logger.info("贝壳房源更新监控开始")
 
+            @deprecated("use change_price_range instead")
             def select_fangxing():
                 # 房型选择
                 fangxing = find_element(page, ("房型选择", "ul.filter li:nth-child(3)"))
@@ -139,6 +141,17 @@ def begin_crawler():
                 smart_click(confirm)
                 return fangxing_5_check
             
+            def change_price_range(oerp: str):
+                # 价格范围选择
+                price_range = find_element(page, ("价格范围选择", "ul.filter li:nth-child(2)"))
+                smart_click(price_range)
+                oerp_input = page.locator("input[name='oerp']")
+                oerp_input.fill(oerp)
+                random_sleep()
+                # 点击确定按钮
+                confirm = page.locator(".save._color").filter(has_text="确定")
+                smart_click(confirm)
+                
             # 按面积排序
             def change_area_sort():
                 logger.info("按面积排序")
@@ -154,13 +167,12 @@ def begin_crawler():
                     smart_click(area)
 
 
-            if not select_fangxing():
-                select_fangxing()
+            change_price_range("12100")
+            change_price_range("12500")
             change_area_sort()
 
             page.wait_for_timeout(50000)  # 等待很久，但不阻塞事件循环
         
-
 
 if __name__ == "__main__":
     begin_crawler()
