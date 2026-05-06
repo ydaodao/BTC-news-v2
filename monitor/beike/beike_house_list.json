@@ -79,6 +79,11 @@
                 "desc": "精装",
                 "color": "#849AAE",
                 "bgColor": "#EDF0F3"
+            },
+            {
+                "desc": "近地铁",
+                "color": "#849AAE",
+                "bgColor": "#EDF0F3"
             }
         ],
         "coverPic": "https://ke-image.ljcdn.com/110000-inspection/039f8edf-9519-4c5a-b626-bc4ba48eeb4f_1000.jpg.210x164.jpg?from=ke.com",
