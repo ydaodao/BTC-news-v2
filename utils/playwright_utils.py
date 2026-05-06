@@ -35,13 +35,28 @@ def random_mouse_move(page: Page):
     page.mouse.move(x, y)
     random_sleep()
 
-def smart_click(locator: Locator):
+def human_click(locator: Locator):
     """带随机延迟的点击，模拟真人思考和操作"""
     # 点击前的“瞄准”时间
     sleep(random.uniform(0.3, 0.8))
     # 执行点击 (增加按压延迟)
     locator.click(delay=random.randint(100, 300))
     # 点击后的“反应”时间
+    sleep(random.uniform(1.0, 2.0))
+
+def human_move(page: Page, locator: Locator):
+    """带随机延迟的移动，模拟真人思考和操作"""
+    # 移动前的“瞄准”时间
+    sleep(random.uniform(0.3, 0.8))
+    # 执行移动 (增加按压延迟)
+    locator.wait_for()
+    box = locator.bounding_box()
+
+    x = box["x"] + box["width"] * random.uniform(0.3, 0.7)
+    y = box["y"] + box["height"] * random.uniform(0.3, 0.7)
+
+    page.mouse.move(x, y)
+    # 移动后的“反应”时间
     sleep(random.uniform(1.0, 2.0))
 
 # -------------- 读取页面信息
@@ -107,7 +122,6 @@ def open_page(context: BrowserContext, url: str, *, listener: Any = None, retrie
                 raise e
             logger.warning(f"连接失败，正在进行第 {i+1} 次重试...")
             sleep(2) # 等待一下再重试
-
 
 def activate_page(
     context: BrowserContext,
@@ -200,7 +214,6 @@ def scroll_to_bottom(page: Page) -> Optional[bool]:
     logger.info("scrolled to bottom")
     return True
 
-
 def scroll_by(page: Page, delta_y: int) -> bool:
     try:
         current_scroll = page.evaluate("window.pageYOffset || document.documentElement.scrollTop")
@@ -212,12 +225,7 @@ def scroll_by(page: Page, delta_y: int) -> bool:
         new_scroll_position = min(new_scroll_position, max_scroll_height)
         page.evaluate(f"window.scrollTo(0, {new_scroll_position});")
         page.wait_for_timeout(2000)
-        logger.info(
-            "scrolled: from=%s to=%s delta=%s",
-            current_scroll,
-            new_scroll_position,
-            delta_y,
-        )
+        logger.info(f"scrolled: from={current_scroll} to={new_scroll_position} delta={delta_y}")
         return True
     except Exception:
         logger.exception("scroll failed")
@@ -445,9 +453,18 @@ if __name__ == "__main__":
         p: Playwright
         browser = p.chromium.connect_over_cdp("http://127.0.0.1:9222")
         context = browser.contexts[0]
-        url = 'https://www.coinglass.com/zh/pro/i/ahr999'
-        page = open_page(context, url)
-        element = find_element(page, ("ahr999指标图", "canvas"))
-        shot_path = FileUtils.get_path("images", "canvas.png")
-        save_screenshot(element, shot_path)
-        page.close()
+        pages = find_pages_by_url(context, "https://map.ke.com/map/110000/ZF")
+        page = pages[0]
+        
+        base_locator = page.locator(".house-card ul > li:nth-child(1)")
+        human_move(page, base_locator)
+        page.mouse.wheel(0, 100)
+        page.wait_for_timeout(1000)
+        page.mouse.wheel(0, 100)
+        page.wait_for_timeout(3000)
+
+        base_locator.scroll_into_view_if_needed()
+        # 等待加载（非常关键）
+        page.wait_for_timeout(int(random.uniform(1.5, 3.0)))
+
+        logger.info("滚动到最新房源列表")
