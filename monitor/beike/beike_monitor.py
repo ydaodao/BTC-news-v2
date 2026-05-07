@@ -86,10 +86,10 @@ class BeikeNetworkListener:
                 continue
             price = parse_price(item["priceStr"])
             other_price = int(price * 0.1)
-            other_price_str = f"【含服务费{other_price}】" if tag == "贝壳优选" else ""
+            other_price_str = f"+【服务费{other_price}】" if tag == "贝壳优选" else ""
 
             template_variable["list"].append({
-                "title": f"{i+1}、{direction}，{area}m²，{price + other_price}元/月，{item['title']}{other_price_str}",
+                "title": f"{i+1}、{direction}，{area}m²，{price}{other_price_str}元/月，{item['title']}",
                 "title_url": item["actionUrl"]
             })
         
