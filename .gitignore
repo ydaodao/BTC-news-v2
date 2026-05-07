@@ -19,3 +19,4 @@ __pycache__/
 # 自定义
 images/
 log/
+monitor/beike/beike_house_list.json
