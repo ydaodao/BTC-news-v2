@@ -6,30 +6,25 @@ from utils.playwright_utils import open_page, find_pages_by_url, find_element, h
 from feishu.robot_service import MsgBotService
 from utils.date_utils import DateUtils
 from loguru import logger
+from urllib.parse import urlparse, parse_qs
 
 class BeikeNetworkListener:
     def __init__(self):
-        self.house_list = []
-        self.house_list_decrease = False
+        self.all_house_list = []
 
     def handle_response(self, response):
         url = response.url
-
+        parsed = urlparse(response.request.url)
+        # 示例：{'cityId': ['110000'], 'dataSource': ['ZF'], 'curPage': ['1'], 'condition': ['Urt200600000001Uin1Uie1l3l4l5oerp12100Urt200600000001Uin1Uie1l3l4l5oerp12500Urco32'], 'maxLatitude': ['40.01991395430792'], 'minLatitude': ['39.98766483351737'], 'maxLongitude': ['116.44363300187156'], 'minLongitude': ['116.36354008260193']}
+        params = parse_qs(parsed.query)
         # 房源列表接口
-        if "proxyApi/i.c-pc-webapi.ke.com/map/houselist" in url and self.house_list_decrease:
+        if "proxyApi/i.c-pc-webapi.ke.com/map/houselist" in url and "Urco32" in params.get("condition", [])[0]:
             try:
                 data = response.json()
                 house_list = data.get("data", {}).get("list", [])
-                logger.info(f"解析到{len(house_list)}条房源")
+                logger.info(f"Page {params.get('curPage', [])[0]} 解析到{len(house_list)}条房源")
+                self.all_house_list.extend(house_list)
 
-                new_house_list, _ = self.check_house_diff(house_list)
-                logger.info(f"新增{len(new_house_list)}条房源")
-                
-                # 发送房源更新卡片
-                self.send_general_card(new_house_list, _)
-
-                # 更新最新房源信息
-                self.update_house_info(house_list)
             except Exception as e:
                 logger.error(f"解析房源失败: {e}")
 
@@ -54,7 +49,8 @@ class BeikeNetworkListener:
 
         return new_house_list, old_house_list
     
-    def send_general_card(self, new_house_list, old_house_list):
+    def send_general_card(self, new_house_list):
+        logger.info(f"构建房源发送卡片")
         def parse_price(price_str: str):
             if not price_str:
                 return 0
@@ -95,11 +91,13 @@ class BeikeNetworkListener:
                 "title_url": item["actionUrl"],
                 "desc": f"{room},{item['title']}{other_price_str}"
             })
-
+        
+        logger.info(f"过滤后新增{len(template_variable['list'])}条房源")
         if len(template_variable["list"]) == 0:
             return
         bot = MsgBotService()
         bot.send_general_card(template_variable=template_variable)
+
 
 def begin_crawler():
     with sync_playwright() as p:
@@ -140,18 +138,17 @@ def begin_crawler():
                 
             # 按面积排序
             def change_area_sort():
-                logger.info("按面积排序")
+                logger.info("按面积降序排序")
                 area = page.locator("li").filter(has_text="面积")
                 human_click(area)
                 area_flag = area.locator("i").get_attribute("class")
                 if area_flag == "orderImgUP":
-                    listener.house_list_decrease = True
                     human_click(area)
                 else:
                     human_click(area)
-                    listener.house_list_decrease = True
                     human_click(area)
 
+            # 滚动获取更多房源信息
             def scroll_to_get_new_house_list():
                 """滚动到最新房源列表"""
                 base_locator = page.locator(".house-card ul > li:nth-child(1)")
@@ -166,7 +163,14 @@ def begin_crawler():
             change_price_range("12100")
             change_price_range("12500")
             change_area_sort()
+            page.wait_for_timeout(5000)
             scroll_to_get_new_house_list()
+
+            new_house_list, _ = listener.check_house_diff(listener.all_house_list)
+            # 发送房源更新卡片
+            listener.send_general_card(new_house_list)
+            # 更新最新房源信息
+            listener.update_house_info(listener.all_house_list)
 
             page.wait_for_timeout(50000)  # 等待很久，但不阻塞事件循环
         
