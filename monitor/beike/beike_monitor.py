@@ -82,15 +82,14 @@ class BeikeNetworkListener:
         new_house_list.sort(key=lambda x: parse_desc(x["desc"])[0], reverse=True)
         for i, item in enumerate(new_house_list):
             area, room, direction, tag = parse_desc(item["desc"])
-            if area < 110:
+            if area < 110 or "南" not in direction:
                 continue
             price = parse_price(item["priceStr"])
-            other_price_str = f"【服务费{int(price//10)}】" if tag == "贝壳优选" else ""
+            other_price_str = f"【服务费{int(price*0.09)}】" if tag == "贝壳优选" else ""
 
             template_variable["list"].append({
-                "title": f"{i+1} 新增：{direction}，{area}m²，{item["priceStr"]}",
-                "title_url": item["actionUrl"],
-                "desc": f"{room},{item['title']}{other_price_str}"
+                "title": f"{i+1}、{direction}，{area}m²，{item["priceStr"]}，{item['title']}{other_price_str}",
+                "title_url": item["actionUrl"]
             })
         
         logger.info(f"过滤后新增{len(template_variable['list'])}条房源")
@@ -174,7 +173,7 @@ def begin_crawler():
             # 更新最新房源信息
             listener.update_house_info(listener.all_house_list)
 
-            page.wait_for_timeout(50000)  # 等待很久，但不阻塞事件循环
+            # page.wait_for_timeout(50000)  # 等待很久，但不阻塞事件循环
         
 
 if __name__ == "__main__":
