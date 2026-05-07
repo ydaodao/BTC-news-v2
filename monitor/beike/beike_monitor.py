@@ -1,6 +1,7 @@
 from warnings import deprecated
 from time import sleep
 from utils.file_utils import FileUtils
+from utils.collection_utils import CollectionUtils
 from playwright.sync_api import sync_playwright, Playwright
 from utils.playwright_utils import open_page, find_pages_by_url, find_element, human_click, random_sleep, human_move
 from feishu.robot_service import MsgBotService
@@ -166,6 +167,7 @@ def begin_crawler():
             page.wait_for_timeout(5000)
             scroll_to_get_new_house_list()
 
+            listener.all_house_list = CollectionUtils.unique_by_key(listener.all_house_list, "actionUrl")
             new_house_list, _ = listener.check_house_diff(listener.all_house_list)
             # 发送房源更新卡片
             listener.send_general_card(new_house_list)
