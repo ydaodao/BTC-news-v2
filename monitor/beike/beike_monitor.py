@@ -129,7 +129,7 @@ class BeikeNetworkListener:
             other_price_str = f"+【服务费{other_price}】" if source == "贝壳优选" else ""
 
             template_variable["list"].append({
-                "title": f"{i+1}、{direction}，{area}m²，{price}{other_price_str}元/月，{item['title']}",
+                "title": f"{i+1}、{item['change_type']}，{direction}，{area}m²，{price}{other_price_str}元/月，{item['title']}",
                 "title_url": item["actionUrl"]
             })
         
