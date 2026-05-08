@@ -194,7 +194,7 @@ def begin_crawler():
                 base_locator = page.locator(".house-card ul > li:nth-child(1)")
                 logger.info("移动到第一个房源")
                 human_move(page, base_locator)
-                for _ in range(5):
+                for _ in range(10):
                     last_locator = page.locator(".house-card ul > li:last-child")
                     last_locator.scroll_into_view_if_needed()
                     page.wait_for_timeout(2000)
