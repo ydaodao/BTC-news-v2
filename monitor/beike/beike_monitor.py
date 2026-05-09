@@ -109,7 +109,7 @@ class BeikeNetworkListener:
                 continue
 
             if old_item.get("price") != item.get("price"):
-                item["change_type"] = f"价格变更{old_item.get("price") - item.get("price")}元"
+                item["change_type"] = f"价格变更{item.get("price") - old_item.get("price")}元"
                 diff_house_list.append(item)
                 continue
 
