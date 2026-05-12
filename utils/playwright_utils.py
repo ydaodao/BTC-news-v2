@@ -456,15 +456,9 @@ if __name__ == "__main__":
         pages = find_pages_by_url(context, "https://map.ke.com/map/110000/ZF")
         page = pages[0]
         
-        base_locator = page.locator(".house-card ul > li:nth-child(1)")
-        human_move(page, base_locator)
-        page.mouse.wheel(0, 100)
-        page.wait_for_timeout(1000)
-        page.mouse.wheel(0, 100)
-        page.wait_for_timeout(3000)
-
-        base_locator.scroll_into_view_if_needed()
-        # 等待加载（非常关键）
-        page.wait_for_timeout(int(random.uniform(1.5, 3.0)))
+        print(page.locator('#loginModel:visible').count())
+        if page.locator('#loginModel:visible').count() > 0:
+            close_button = page.locator('#loginModel .login_panel_close')
+            close_button.highlight()
 
         logger.info("滚动到最新房源列表")

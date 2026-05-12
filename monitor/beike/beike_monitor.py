@@ -115,7 +115,7 @@ class BeikeNetworkListener:
 
         return diff_house_list
     
-    def send_general_card(self):
+    def send_house_list_card(self):
         diff_house_list = self.check_house_diff(self.all_house_list)
 
         logger.info(f"构建房源发送卡片")
@@ -137,6 +137,13 @@ class BeikeNetworkListener:
         logger.info(f"过滤后新增{len(template_variable['list'])}条房源")
         if len(template_variable["list"]) == 0:
             return
+        bot = MsgBotService()
+        bot.send_general_card(template_variable=template_variable)
+
+    def send_card_login_status(self):
+        template_variable = {"card_title": f'{DateUtils.now_str(fmt="%m.%d")} 贝壳登录失效'}
+
+        logger.info(f"发送登录状态卡片：{template_variable}")
         bot = MsgBotService()
         bot.send_general_card(template_variable=template_variable)
 
@@ -208,13 +215,17 @@ def begin_crawler():
                 base_locator.scroll_into_view_if_needed()
 
             change_price_range("12100")
+            # 判断是否登录失效
+            if page.locator('#loginModel:visible').count() > 0:
+                listener.send_card_login_status()
+                continue
             change_price_range("12500")
             change_area_sort()
             page.wait_for_timeout(5000)
             scroll_to_get_new_house_list()
 
             # 发送房源更新卡片
-            listener.send_general_card()
+            listener.send_house_list_card()
             # 更新最新房源信息
             listener.update_house_info(listener.all_house_list)
             # page.wait_for_timeout(50000)  # 等待很久，但不阻塞事件循环
