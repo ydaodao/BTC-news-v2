@@ -122,7 +122,7 @@ class BeikeNetworkListener:
         template_variable = {"card_title": f'{DateUtils.now_str(fmt="%m.%d")} 房源更新', "list": []}
         for i, item in enumerate(diff_house_list):
             area, room, direction, source = item["area"], item["room"], item["direction"], item["source"]
-            if area < 130 or "南" not in direction:
+            if area < 130 or "南" not in direction or "公寓" in item["title"]:
                 continue
             price = item["price"]
             other_price = int(price * 0.1)
