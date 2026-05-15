@@ -131,7 +131,7 @@ class BeikeNetworkListener:
             template_variable["list"].append({
                 "title": f"{i+1}、{item['change_type']}，{direction}，{area}m²，{price}{other_price_str}元/月，{item['title']}",
                 "title_url": item["actionUrl"],
-                "desc": f"{item['title']}"
+                "desc": f"{'【4居】' if '4室' in item['title'] else ''}{item['title']}"
             })
         
         logger.info(f"过滤后新增{len(template_variable['list'])}条房源")
