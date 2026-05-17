@@ -119,7 +119,7 @@ class BeikeNetworkListener:
         diff_house_list = self.check_house_diff(self.all_house_list)
 
         logger.info(f"构建房源发送卡片")
-        template_variable = {"card_title": f'{DateUtils.now_str(fmt="%m.%d")} 房源更新', "list": []}
+        template_variable = {"card_title": "", "list": []}
         for i, item in enumerate(diff_house_list):
             area, room, direction, source = item["area"], item["room"], item["direction"], item["source"]
             if area < 130 or "南" not in direction or "公寓" in item["title"]:
@@ -135,8 +135,8 @@ class BeikeNetworkListener:
             })
         
         logger.info(f"过滤后新增{len(template_variable['list'])}条房源")
-        if len(template_variable["list"]) == 0:
-            return
+        template_variable["card_title"] = f'{DateUtils.now_str(fmt="%m.%d")} 房源更新 {len(template_variable["list"])}条'
+        
         bot = MsgBotService()
         bot.send_general_card(template_variable=template_variable)
 
