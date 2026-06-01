@@ -1,3 +1,6 @@
+from playwright.sync_api._generated import Page
+
+
 from warnings import deprecated
 from time import sleep
 from utils.file_utils import FileUtils
@@ -10,7 +13,8 @@ from loguru import logger
 from urllib.parse import urlparse, parse_qs
 
 class BeikeNetworkListener:
-    def __init__(self):
+    def __init__(self, tab_index: int = 0):
+        self.tab_index = tab_index
         self.all_house_list = []
 
     def handle_response(self, response):
@@ -70,14 +74,14 @@ class BeikeNetworkListener:
         return int(area), room, direction, tag
 
     def update_house_info(self, house_list):
-        path = FileUtils.get_path("monitor", "beike", "beike_house_list.json")
+        path = FileUtils.get_path("monitor", "beike", f"beike_house_list_{self.tab_index}.json")
         FileUtils.write_json(path, house_list)
 
     # 基于item["actionUrl"]对比上次缓存：返回新增房源 + 封面图/价格发生变化的房源列表
     def check_house_diff(self, new_house_list):
-        old_house_path = FileUtils.get_path("monitor", "beike", "beike_house_list.json")
+        old_house_path = FileUtils.get_path("monitor", "beike", f"beike_house_list_{self.tab_index}.json")
         old_house_list = FileUtils.read_json(old_house_path) or []
-        ignore_house_path = FileUtils.get_path("monitor", "beike", "ignore_house_list.json")
+        ignore_house_path = FileUtils.get_path("monitor", "beike", f"ignore_house_list_{self.tab_index}.json")
         ignore_house_list = FileUtils.read_json(ignore_house_path) or []
 
         logger.info(f"过滤前有 {len(new_house_list)} 条新房源")
@@ -152,11 +156,11 @@ def begin_crawler():
         browser = p.chromium.connect_over_cdp("http://127.0.0.1:9222")
         context = browser.contexts[0]
         pages = find_pages_by_url(context, "https://map.ke.com/map/110000/ZF")
-        for page in pages:
+        for i, page in enumerate[Page](pages):
             page.bring_to_front()
-            listener = BeikeNetworkListener()
+            listener = BeikeNetworkListener(tab_index=i)
             page.on("response", listener.handle_response)
-            logger.info("贝壳房源更新监控开始")
+            logger.info(f"贝壳房源更新监控开始，第{i+1}页")
 
             @deprecated("use change_price_range instead")
             def select_fangxing():
@@ -219,7 +223,11 @@ def begin_crawler():
             if page.locator('#loginModel:visible').count() > 0:
                 listener.send_card_login_status()
                 continue
-            change_price_range("12500")
+
+            if i == 0:
+                change_price_range("12500")
+            elif i == 1:
+                change_price_range("14000")
             change_area_sort()
             page.wait_for_timeout(5000)
             scroll_to_get_new_house_list()
