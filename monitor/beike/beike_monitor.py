@@ -126,7 +126,7 @@ class BeikeNetworkListener:
         template_variable = {"card_title": "", "list": []}
         for i, item in enumerate(diff_house_list):
             area, room, direction, source = item["area"], item["room"], item["direction"], item["source"]
-            if area < 130 or "南" not in direction or "公寓" in item["title"]:
+            if area < 120 or "南" not in direction or "公寓" in item["title"]:
                 continue
             price = item["price"]
             other_price = int(price * 0.1)
@@ -206,7 +206,7 @@ def begin_crawler():
                 base_locator = page.locator(".house-card ul > li:nth-child(1)")
                 logger.info("移动到第一个房源")
                 human_move(page, base_locator)
-                for _ in range(10):
+                for _ in range(5):
                     last_locator = page.locator(".house-card ul > li:last-child")
                     last_locator.scroll_into_view_if_needed()
                     page.wait_for_timeout(2000)
@@ -227,7 +227,11 @@ def begin_crawler():
             if i == 0:
                 change_price_range("12500")
             elif i == 1:
-                change_price_range("14000")
+                change_price_range("12500")
+            elif i == 2:
+                change_price_range("14500")
+            else:
+                change_price_range("12500")
             change_area_sort()
             page.wait_for_timeout(5000)
             scroll_to_get_new_house_list()
