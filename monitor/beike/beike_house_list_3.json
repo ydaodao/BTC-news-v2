@@ -16,7 +16,7 @@
     {
         "title": "整租·嘉铭桐城B区 3室2厅",
         "desc": "147m²|3室2厅2卫|东 南|贝壳优选",
-        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/17722564990_O4roC6QmE.jpg.210x164.jpg?from=ke.com",
+        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/fd3633ac820dcb2f38c7efce6bf41e30.jpeg.210x164.jpg?from=ke.com",
         "priceStr": "12000元/月",
         "unitPriceStr": "",
         "actionUrl": "https://bj.zu.ke.com/zufang/BJ2164219642569031680.html",
@@ -26,20 +26,6 @@
         "room": "3室2厅2卫",
         "direction": "东 南",
         "source": "贝壳优选"
-    },
-    {
-        "title": "整租·芍药居北里 3室1厅",
-        "desc": "139m²|3室1厅2卫|南|自如",
-        "coverPic": "https://ke-image.ljcdn.com/rent-house-1/img/2b659455896a8fbc9fd92302ea46835f-1776346556061/485527a1877ef2355f2eb16aac6e9c7d.jpg.210x164.jpg?from=ke.com",
-        "priceStr": "11790元/月",
-        "unitPriceStr": "",
-        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2153915655131234304.html",
-        "cardType": "公寓",
-        "price": 11790,
-        "area": 139,
-        "room": "3室1厅2卫",
-        "direction": "南",
-        "source": "自如"
     },
     {
         "title": "整租·天创世缘 3室1厅",
@@ -56,18 +42,32 @@
         "source": "贝壳优选"
     },
     {
-        "title": "整租·太极小区 3室1厅",
-        "desc": "132m²|3室1厅2卫|南 西|链家",
-        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/pc1_o6ixE1Fua.jpg.210x164.jpg?from=ke.com",
+        "title": "整租·阳光新干线 3室1厅",
+        "desc": "132m²|3室1厅1卫|南 北|贝壳优选",
+        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/ece392ad76ac1f10f169caa0e8374374.jpeg.210x164.jpg?from=ke.com",
         "priceStr": "11000元/月",
         "unitPriceStr": "",
-        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2170779514357940224.html",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2169033000300314624.html",
         "cardType": "普租",
         "price": 11000,
         "area": 132,
+        "room": "3室1厅1卫",
+        "direction": "南 北",
+        "source": "贝壳优选"
+    },
+    {
+        "title": "整租·千鹤家园 3室1厅",
+        "desc": "129m²|3室1厅2卫|东南 南|贝壳优选",
+        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/pc0_igEv06kPc_1.jpg.210x164.jpg?from=ke.com",
+        "priceStr": "12000元/月",
+        "unitPriceStr": "",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2041762308794875904.html",
+        "cardType": "普租",
+        "price": 12000,
+        "area": 129,
         "room": "3室1厅2卫",
-        "direction": "南 西",
-        "source": "链家"
+        "direction": "东南 南",
+        "source": "贝壳优选"
     },
     {
         "title": "整租·高原街7号院 3室1厅",
@@ -87,15 +87,29 @@
         "title": "整租·安慧北里安园 3室1厅",
         "desc": "120m²|3室1厅1卫|南|自如",
         "coverPic": "https://ke-image.ljcdn.com/rent-house-1/img/2b659455896a8fbc9fd92302ea46835f-1773194056462/a1be33e9fb434e20c333f8bb1cec90f6.jpg.210x164.jpg?from=ke.com",
-        "priceStr": "10989元/月",
+        "priceStr": "10589元/月",
         "unitPriceStr": "",
         "actionUrl": "https://bj.zu.ke.com/zufang/BJ1871253543743127552.html",
         "cardType": "公寓",
-        "price": 10989,
+        "price": 10589,
         "area": 120,
         "room": "3室1厅1卫",
         "direction": "南",
         "source": "自如"
+    },
+    {
+        "title": "整租·大屯里小区 3室1厅",
+        "desc": "120m²|3室1厅1卫|南 东|贝壳优选",
+        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/1032ed99-7b30-43c7-8478-32d2dadf881f_1000.jpg.210x164.jpg?from=ke.com",
+        "priceStr": "9450元/月",
+        "unitPriceStr": "",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2172296388841308160.html",
+        "cardType": "普租",
+        "price": 9450,
+        "area": 120,
+        "room": "3室1厅1卫",
+        "direction": "南 东",
+        "source": "贝壳优选"
     },
     {
         "title": "整租·干杨树 3室1厅",
@@ -108,6 +122,20 @@
         "price": 12000,
         "area": 120,
         "room": "3室1厅2卫",
+        "direction": "南 北",
+        "source": "链家"
+    },
+    {
+        "title": "整租·志新北里 3室1厅",
+        "desc": "117m²|3室1厅1卫|南 北|链家",
+        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/pc1_Ph5wsoOvz.jpg.210x164.jpg?from=ke.com",
+        "priceStr": "12000元/月",
+        "unitPriceStr": "",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2112856885408301056.html",
+        "cardType": "普租",
+        "price": 12000,
+        "area": 117,
+        "room": "3室1厅1卫",
         "direction": "南 北",
         "source": "链家"
     },
@@ -129,11 +157,11 @@
         "title": "整租·安慧北里安园 3室1厅",
         "desc": "112m²|3室1厅1卫|南|自如",
         "coverPic": "https://ke-image.ljcdn.com/rent-house-1/img/2b659455896a8fbc9fd92302ea46835f-1778288600050/acd1917177c4afc86eee9e2a51fcc1ad.jpg.210x164.jpg?from=ke.com",
-        "priceStr": "10360元/月",
+        "priceStr": "9960元/月",
         "unitPriceStr": "",
         "actionUrl": "https://bj.zu.ke.com/zufang/BJ1891716346928955392.html",
         "cardType": "公寓",
-        "price": 10360,
+        "price": 9960,
         "area": 112,
         "room": "3室1厅1卫",
         "direction": "南",
@@ -184,7 +212,7 @@
     {
         "title": "整租·芍药居北里 3室1厅",
         "desc": "105m²|3室1厅2卫|南 北|贝壳优选",
-        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/1750b9f0d26a1488c01aab70163eb4c9.jpeg.210x164.jpg?from=ke.com",
+        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/622a30b6e2c140a86533579c299104b4.jpeg.210x164.jpg?from=ke.com",
         "priceStr": "9500元/月",
         "unitPriceStr": "",
         "actionUrl": "https://bj.zu.ke.com/zufang/BJ2107715766546595840.html",
@@ -194,6 +222,20 @@
         "room": "3室1厅2卫",
         "direction": "南 北",
         "source": "贝壳优选"
+    },
+    {
+        "title": "整租·安慧东里 3室1厅",
+        "desc": "102m²|3室1厅1卫|南|链家",
+        "coverPic": "https://ke-image.ljcdn.com/rent-front-image/151a7143250b0e86e345f85334058ca7.png.210x164.jpg?from=ke.com",
+        "priceStr": "9800元/月",
+        "unitPriceStr": "",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2173091472767713280.html",
+        "cardType": "普租",
+        "price": 9800,
+        "area": 102,
+        "room": "3室1厅1卫",
+        "direction": "南",
+        "source": "链家"
     },
     {
         "title": "整租·双泉堡甲1号院 3室1厅",
@@ -254,7 +296,7 @@
     {
         "title": "整租·花园路1号院 3室1厅",
         "desc": "90m²|3室1厅1卫|南 北|贝壳优选",
-        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/a3954302-dedd-4c6e-85f9-071e1fe26266.jpg.210x164.jpg?from=ke.com",
+        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/146a15ad-eee4-4aa4-859e-8f3414e5021c.png.210x164.jpg?from=ke.com",
         "priceStr": "10200元/月",
         "unitPriceStr": "",
         "actionUrl": "https://bj.zu.ke.com/zufang/BJ1945725857981005824.html",
@@ -292,6 +334,36 @@
         "room": "3室1厅1卫",
         "direction": "南 西",
         "source": "链家"
+    },
+    {
+        "title": "整租·安慧里一区 3室1厅",
+        "desc": "85m²|3室1厅1卫|南 北|链家",
+        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/pc1_FSdZtPBYS.jpg.210x164.jpg?from=ke.com",
+        "priceStr": "7900元/月",
+        "unitPriceStr": "",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2172996526614249472.html",
+        "cardType": "普租",
+        "price": 7900,
+        "area": 85,
+        "room": "3室1厅1卫",
+        "direction": "南 北",
+        "source": "链家",
+        "change_type": "封面变更"
+    },
+    {
+        "title": "整租·世纪村东区 3室1厅",
+        "desc": "85m²|3室1厅1卫|东 南|贝壳优选",
+        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/9df0f723-a2b6-4c06-b39a-3dad62d299b9.jpg.210x164.jpg?from=ke.com",
+        "priceStr": "8400元/月",
+        "unitPriceStr": "",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2042483411343376384.html",
+        "cardType": "普租",
+        "price": 8400,
+        "area": 85,
+        "room": "3室1厅1卫",
+        "direction": "东 南",
+        "source": "贝壳优选",
+        "change_type": "封面变更"
     },
     {
         "title": "整租·二里庄小区 3室1厅",
@@ -353,11 +425,25 @@
         "title": "整租·安苑北里 3室1厅",
         "desc": "81m²|3室1厅1卫|南 北|贝壳优选",
         "coverPic": "https://ke-image.ljcdn.com/lease-image/house/4620d029512525759abc3b17f6202206.jpeg.210x164.jpg?from=ke.com",
-        "priceStr": "7550元/月",
+        "priceStr": "7350元/月",
         "unitPriceStr": "",
         "actionUrl": "https://bj.zu.ke.com/zufang/BJ1724739283450855424.html",
         "cardType": "普租",
-        "price": 7550,
+        "price": 7350,
+        "area": 81,
+        "room": "3室1厅1卫",
+        "direction": "南 北",
+        "source": "贝壳优选"
+    },
+    {
+        "title": "整租·塔院小区 3室1厅",
+        "desc": "81m²|3室1厅1卫|南 北|贝壳优选",
+        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/pc1_AbpIhqJeX.jpg.210x164.jpg?from=ke.com",
+        "priceStr": "10500元/月",
+        "unitPriceStr": "",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2171887233643053056.html",
+        "cardType": "普租",
+        "price": 10500,
         "area": 81,
         "room": "3室1厅1卫",
         "direction": "南 北",
@@ -420,20 +506,6 @@
         "source": "链家"
     },
     {
-        "title": "整租·华严北里2号院 3室1厅",
-        "desc": "72m²|3室1厅1卫|南 北|链家",
-        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/pc1_ykRl5EaYb.jpg.210x164.jpg?from=ke.com",
-        "priceStr": "8800元/月",
-        "unitPriceStr": "",
-        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2172255510064005120.html",
-        "cardType": "普租",
-        "price": 8800,
-        "area": 72,
-        "room": "3室1厅1卫",
-        "direction": "南 北",
-        "source": "链家"
-    },
-    {
         "title": "整租·志新村 3室1厅",
         "desc": "72m²|3室1厅1卫|南 西南|链家",
         "coverPic": "https://ke-image.ljcdn.com/110000-inspection/pc1_W1Q7oicg5.jpg.210x164.jpg?from=ke.com",
@@ -448,18 +520,18 @@
         "source": "链家"
     },
     {
-        "title": "整租·二里庄小区 3室1厅",
-        "desc": "72m²|3室1厅1卫|南 北|贝壳优选",
-        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/c62e0c8f-80e2-40f9-b096-b574f3edfe7f.jpg.210x164.jpg?from=ke.com",
-        "priceStr": "7500元/月",
+        "title": "整租·华严北里2号院 3室1厅",
+        "desc": "72m²|3室1厅1卫|南 北|链家",
+        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/pc1_ykRl5EaYb.jpg.210x164.jpg?from=ke.com",
+        "priceStr": "8800元/月",
         "unitPriceStr": "",
-        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2004480864540426240.html",
+        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2172255510064005120.html",
         "cardType": "普租",
-        "price": 7500,
+        "price": 8800,
         "area": 72,
         "room": "3室1厅1卫",
         "direction": "南 北",
-        "source": "贝壳优选"
+        "source": "链家"
     },
     {
         "title": "整租·二里庄小区 3室1厅",
@@ -491,20 +563,6 @@
     },
     {
         "title": "整租·二里庄小区 3室1厅",
-        "desc": "70m²|3室1厅1卫|南 北|贝壳优选",
-        "coverPic": "https://ke-image.ljcdn.com/lease-image/house/583cbd6582f31d87570916fb9974e6cc.jpeg.210x164.jpg?from=ke.com",
-        "priceStr": "7500元/月",
-        "unitPriceStr": "",
-        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2155592323520528384.html",
-        "cardType": "普租",
-        "price": 7500,
-        "area": 70,
-        "room": "3室1厅1卫",
-        "direction": "南 北",
-        "source": "贝壳优选"
-    },
-    {
-        "title": "整租·二里庄小区 3室1厅",
         "desc": "70m²|3室1厅1卫|南 北|链家",
         "coverPic": "https://ke-image.ljcdn.com/rent-front-image/151a7143250b0e86e345f85334058ca7.png.210x164.jpg?from=ke.com",
         "priceStr": "9300元/月",
@@ -515,7 +573,8 @@
         "area": 70,
         "room": "3室1厅1卫",
         "direction": "南 北",
-        "source": "链家"
+        "source": "链家",
+        "change_type": "新增"
     },
     {
         "title": "整租·华严北里小区 3室0厅",
@@ -529,20 +588,7 @@
         "area": 65,
         "room": "3室1卫",
         "direction": "南 西南",
-        "source": "链家"
-    },
-    {
-        "title": "整租·西单宿舍 3室0厅",
-        "desc": "58m²|3室1卫|南|链家",
-        "coverPic": "https://ke-image.ljcdn.com/110000-inspection/pc1_do7ZtKmz4.jpg.210x164.jpg?from=ke.com",
-        "priceStr": "7500元/月",
-        "unitPriceStr": "",
-        "actionUrl": "https://bj.zu.ke.com/zufang/BJ2164914462576869376.html",
-        "cardType": "普租",
-        "price": 7500,
-        "area": 58,
-        "room": "3室1卫",
-        "direction": "南",
-        "source": "链家"
+        "source": "链家",
+        "change_type": "新增"
     }
 ]
