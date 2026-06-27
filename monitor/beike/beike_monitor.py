@@ -81,7 +81,7 @@ class BeikeNetworkListener:
     def check_house_diff(self, new_house_list):
         old_house_path = FileUtils.get_path("monitor", "beike", f"beike_house_list_{self.tab_index}.json")
         old_house_list = FileUtils.read_json(old_house_path) or []
-        ignore_house_path = FileUtils.get_path("monitor", "beike", f"ignore_house_list_{self.tab_index}.json")
+        ignore_house_path = FileUtils.get_path("monitor", "beike", f"ignore_house_list.json")
         ignore_house_list = FileUtils.read_json(ignore_house_path) or []
 
         logger.info(f"过滤前有 {len(new_house_list)} 条新房源")
@@ -126,7 +126,7 @@ class BeikeNetworkListener:
         template_variable = {"card_title": "", "list": []}
         for i, item in enumerate(diff_house_list):
             area, room, direction, source = item["area"], item["room"], item["direction"], item["source"]
-            if area < 120 or "南" not in direction or "公寓" in item["title"]:
+            if area < 100 or "公寓" in item["title"]:
                 continue
             price = item["price"]
             other_price = int(price * 0.1)
