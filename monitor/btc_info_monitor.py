@@ -134,7 +134,7 @@ def fetch_calshi_clarity_info(context: BrowserContext, client: lark.Client):
     vol_anchor = page.locator("span").filter(has_text=re.compile(r"\$.*vol"))
 
     # 获取calshi clarity预测趋势图
-    calshi_clarity_chart = vol_anchor.locator("..").locator("..").locator("..").locator("..").locator("..")
+    calshi_clarity_chart = vol_anchor.locator("..").locator("..").locator("..").locator("..").locator("..").locator("..").locator("..")
     calshi_clarity_data = calshi_clarity_chart.locator(">div:nth-child(1)")
     image_path = FileUtils.get_path("images", "calshi_clarity.png")
     save_screenshot(calshi_clarity_chart, image_path)
