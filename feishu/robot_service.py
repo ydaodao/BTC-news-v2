@@ -45,6 +45,17 @@ class MsgBotService:
         self.client = client or build_client(load_settings())
     
     def send_general_card(self, chat_id: str = templates.btc_news_chat_id, template_variable: dict = None):
+        # template_variable = {
+        #     "card_title": "卡片标题",
+        #     "list": [
+        #         {
+        #             "title": "标题",
+        #             "desc": "描述",
+        #             "title_url": "https://www.baidu.com",
+        #             "img_key": "img_key"
+        #         }
+        #     ]
+        # }
         content = template_card_content(
             template_id=self.templates.general_card_id,
             template_variable=template_variable,
