@@ -112,10 +112,10 @@ def fetch_pm_clarity_info(context: BrowserContext, client: lark.Client):
 
     # 获取最新概率数据
     target_locator = (
-        page.locator("span", has_text="% 概率")
-        .locator("..")
-        .locator("..")
-        .locator("xpath=preceding-sibling::span[1]")
+        page.locator("span", has_text="% 概率").last
+        # .locator("..")
+        # .locator("..")
+        # .locator("xpath=preceding-sibling::span[1]")
     )
     target_locator.highlight()  # 调试时很有用，会让元素闪烁
     logger.info(f"polymarket概率: {target_locator.inner_text()}%")
